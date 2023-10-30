@@ -1,195 +1,174 @@
-import { Avatar, Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, Paper, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react'
-import { Link, useNavigate, useLoaderData, Navigate } from 'react-router-dom'
-
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { BaseURL, empLogIn } from "../../service/BaseURL";
+import axios from "axios";
+import ToastAlertLoading from "../../components/ToastAlertLoading";
+import ToastAlertSuccess from "../../components/ToastAlertSuccess";
+import ToastAlertError from "../../components/ToastAlertError";
+import { useEffect } from "react";
 
 export default function EmpLogin() {
-  //const { loggedin } = useLoaderData();
-  //const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn") || false);
-
-  function handleLogin() {
-    //setLoggedIn(true)
-    localStorage.setItem("loggedIn", true);
-  }
-
-  function handleLogout() {
-    //setLoggedIn(false)
-    localStorage.setItem("loggedIn", false);
-  }
   const navigate = useNavigate();
-  
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const [onOpenToast, setOnOpenToast] = useState(false);
+  const [resLogin, setResLogin] = useState({
+    resLogin: "",
+    error: "",
+    isLoading: false,
+  });
+
+
+  const [dataLogin, setDataLogin] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleUsername = (event) => {
+    setDataLogin((prev) => ({
+      ...prev,
+      username: event.target.value,
+    }));
   };
+
+  const handlePassword = (event) => {
+    setDataLogin((prev) => ({
+      ...prev,
+      password: event.target.value,
+    }));
+  };
+
+  //  send  update
+  const sendEmpLogIn = async () => {
+    if (!dataLogin.username || !dataLogin.password) {
+      return;
+    }
+    const fetcherEmpLogin = async () => {
+      let dataJson = JSON.stringify(dataLogin);
+
+      const sendUrl = `${BaseURL}${empLogIn}`;
+      setOnOpenToast(true);
+      setResLogin((prev) => ({
+        ...prev,
+        isLoading: true,
+      }));
+      let customConfig = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      try {
+        const response = await axios.post(sendUrl, dataJson, customConfig);
+        const data = await response.data;
+        setResLogin((prev) => ({
+          ...prev,
+          resLogin: data,
+          error: "",
+        }));
+
+        localStorage.setItem(
+          "loggedIn",
+          JSON.stringify({ accessToken: data.accessToken })
+        );
+        handleOnClose();
+      } catch (error) {
+        console.error("error : ", error);
+        setResLogin((prev) => ({
+          ...prev,
+          resLogin: "",
+          error: error,
+        }));
+      } finally {
+        setResLogin((prev) => ({
+          ...prev,
+          isLoading: false,
+        }));
+      }
+    };
+    ////////// use
+    await fetcherEmpLogin();
+  };
+
+  let timeToOut;
+  const handleOnClose = () => {
+    timeToOut = setTimeout(() => {
+      navigate("/report");
+    }, 1000);
+  };
+
+  useEffect(() => {
+    return () => clearTimeout(timeToOut);
+  }, []);
 
   return (
     <>
-    <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            {/* <LockOutlinedIcon /> */}
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
+      <div
+        className="min-h-screen hero bg-base-200"
+        style={{
+          backgroundImage: "url(images/bg5.jpg)",
+        }}
+      >
+        <div className="flex-col hero-content lg:flex-row-reverse hero-overlay bg-opacity-60">
+          <div className="mb-10 text-center lg:text-left text-base-100">
+            <p className="text-5xl font-bold ">Kaffe Primo </p>
+            <span className="text-3xl font-bold ">เข้าสู่ระบบพนักงาน </span>
+          </div>
+          <div className="flex-shrink-0 w-full max-w-sm shadow-2xl card bg-base-100">
+            <div className="card-body">
+              <div className="form-control">
+                <label className="label" htmlFor="username-login">
+                  <span className="label-text">ชื่อผู้ใช้</span>
+                </label>
+                <input
+                  id="username-login"
+                  type="text"
+                  value={dataLogin.username}
+                  placeholder="username"
+                  className="input input-bordered"
+                  onChange={handleUsername}
+                />
+              </div>
+              <div className="form-control">
+                <label className="label" htmlFor="password-login">
+                  <span className="label-text">รหัสผ่าน</span>
+                </label>
+                <input
+                  id="password-login"
+                  type="password"
+                  value={dataLogin.password}
+                  placeholder="password"
+                  className="input input-bordered"
+                  onChange={handlePassword}
+                />
+              </div>
+              <div className="mt-6 form-control">
+                <button
+                  className="btn btn-primary"
+                  onClick={() => sendEmpLogIn()}
+                >
+                  ล็อกอิน
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/*  Toast   */}
+      <>
+        {onOpenToast &&
+          (resLogin.isLoading ? (
+            <ToastAlertLoading />
+          ) : resLogin.resLogin ? (
+            <ToastAlertSuccess
+              setOnOpenToast={setOnOpenToast}
+              successMessage={"Login success"}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+          ) : (
+            <ToastAlertError
+              setOnOpenToast={setOnOpenToast}
+              errorMessage={"Login fail"}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
-      </Container>
+          ))}
       </>
-  )
-  
-  // return (
-  //   <>
-  //     <Grid container component="main" sx={{ height: '100vh' }}>
-  //       <CssBaseline />
-  //       <Grid
-  //         item
-  //         xs={false}
-  //         sm={4}
-  //         md={7}
-  //         sx={{
-  //           backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-  //           backgroundRepeat: 'no-repeat',
-  //           backgroundColor: (t) =>
-  //             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-  //           backgroundSize: 'cover',
-  //           backgroundPosition: 'center',
-  //         }}
-  //       />
-  //       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-  //         <Box
-  //           sx={{
-  //             my: 8,
-  //             mx: 4,
-  //             display: 'flex',
-  //             flexDirection: 'column',
-  //             alignItems: 'center',
-  //           }}
-  //         >
-  //           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-  //             {/* <LockOutlinedIcon /> */}
-  //           </Avatar>
-  //           <Typography component="h1" variant="h5">
-  //             Sign in
-  //           </Typography>
-  //           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-  //             <TextField
-  //               margin="normal"
-  //               required
-  //               fullWidth
-  //               id="email"
-  //               label="Email Address"
-  //               name="email"
-  //               autoComplete="email"
-  //               autoFocus
-  //             />
-  //             <TextField
-  //               margin="normal"
-  //               required
-  //               fullWidth
-  //               name="password"
-  //               label="Password"
-  //               type="password"
-  //               id="password"
-  //               autoComplete="current-password"
-  //             />
-  //             <FormControlLabel
-  //               control={<Checkbox value="remember" color="primary" />}
-  //               label="Remember me"
-  //             />
-  //             <Button
-  //               type="submit"
-  //               fullWidth
-  //               variant="contained"
-  //               sx={{ mt: 3, mb: 2 }}
-  //             >
-  //               Sign In
-  //             </Button>
-  //             <Grid container>
-  //               <Grid item xs>
-  //                 <Link href="#" variant="body2">
-  //                   Forgot password?
-  //                 </Link>
-  //               </Grid>
-  //               <Grid item>
-  //                 <Link href="#" variant="body2">
-  //                   {"Don't have an account? Sign Up"}
-  //                 </Link>
-  //               </Grid>
-  //             </Grid>
-  //             {/* <Copyright sx={{ mt: 5 }} /> */}
-  //           </Box>
-  //         </Box>
-  //       </Grid>
-  //     </Grid>
-  //   </>
-  // )
+    </>
+  );
 }
-
-
-// eslint-disable-next-line react-refresh/only-export-components
-// export async function checkLogin() {
-  
-  
-//   return { loggedin };
-// }

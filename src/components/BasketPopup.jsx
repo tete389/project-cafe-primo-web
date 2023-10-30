@@ -1,310 +1,330 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  FilledInput,
-  FormControl,
-  TextField,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable react/prop-types */
 
 import "../style/store.css";
-import { styled, StyledEngineProvider } from "@mui/material/styles";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import NoteIcon from "@mui/icons-material/Note";
-import DiscountIcon from "@mui/icons-material/Discount";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import DiscountBox from "./DiscountBox";
+import NoteBox from "./NoteBox";
+import {
+  BasketValueContext,
+  LanguageContext,
+  OrderValueContext,
+} from "../pages/Store";
 
-//// styled
-const MainBox = styled(Box)(() => ({
-  height: "100%",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "flex-start",
-}));
+export default function BasketPopup(props) {
+  const {
+    handleOpenBasket,
+    setingShopData,
+    sendCreateOrder,
+    handleEditMenuPopup,
+    handleMenuEdit,
+  } = props;
 
-const BodymBox = styled(Box)(() => ({
-  width: "100%",
-  height: "calc(100% - 219px)",
-  overflow: "scroll",
-}));
+  const { basketValue, setBasketValue } = useContext(BasketValueContext);
+  const { orderValue, setOrderValue } = useContext(OrderValueContext);
+  const userLanguage = useContext(LanguageContext);
 
-const BottomBox = styled(Box)(() => ({
-  position: "absolute",
-  bottom: 0,
-  width: "100%",
-  gap: "5px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "space-evenly",
-  padding: "10px 0",
-  backgroundColor: "#EAEFF1",
-}));
+  const [openBox, setOpenBox] = useState({ box1: false, box2: false });
+  let discountPoint = 0;
+  const [orderPriceAll, setOrderPriceAll] = useState(0);
+  // const [createOrder, setCreateOrder] = useState({
+  //   note: "",
+  //   discount: {
+  //     phoneNumber: "",
+  //     spendPoint: 0,
+  //   },
+  //   prodRequests: [],
+  // });
 
-const StyledBox = styled(Box)(() => ({
-  display: "flex",
-  flexdirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
-  width: "90%",
-}));
-
-const ConfirmButton = styled(Button)(() => ({
-  borderRadius: "20px",
-  height: "3rem",
-  width: "16rem",
-  backgroundColor: "#07A0DC",
-  "&:hover": {
-    backgroundColor: "#07A0DC",
-    borderColor: "#07A0DC",
-    boxShadow: "none",
-  },
-}));
-
-const FillOneLine = styled(FilledInput)(() => ({
-  ".MuiFilledInput-input": {
-    padding: "8px 12px 9px",
-  },
-}));
-
-// const Textf = styled(TextField)(() => ({
-//   "& .MuiFilledInput-root:before": {
-//     borderBottom: "0px"
-//   },
-//   "& .MuiFilledInput-root:after": {
-//     borderBottom: "0px"
-//   },
-//   "& .MuiFilledInput-root:hover:before": {
-//     borderBottom: "0px"
-//   },
-// }));
-
-///// theme
-const theme = createTheme({
-  palette: {
-    neutral: {
-      main: "#ffffff",
-    },
-    // confirm: {
-    //   main: "#07A0DC",
-    // },
-  },
-  components: {
-    MuiButton: {
-      defaultProps: {
-        disableRipple: true,
-      },
-    },
-    MuiAccordion: {
-      defaultProps: {
-        square: true,
-      },
-      styleOverrides: {
-        root: {
-          borderRadius: "20px",
-        },
-      },
-    },
-    MuiAccordionSummary: {
-      styleOverrides: {
-        // root: {
-        //   "&.Mui-expanded": {
-        //     minHeight: "36px",
-        //   },
-        // },
-        content: {
-          "&.Mui-expanded": {
-            margin: "auto",
-          },
-        },
-      },
-    },
-    // MuiFilledInput: {
-    //   defaultProps: {
-    //     disableUnderline: true,
-    //   },
-    // },
-    MuiTextField: {
-      defaultProps: {
-        hiddenLabel: true,
-        fullWidth: true,
-      },
-    },
-  },
-});
-
-const bodyBoxs = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-  23, 24, 25,
-];
-
-export default function BasketPopup() {
-  const [expandedBox, setExpandedBox] = useState(false);
-  const [expandedPoint, setExpandedPoint] = useState(false);
-
-  const handleExpandedBox = (panel) => (event, isExpanded) => {
-    setExpandedBox(isExpanded ? panel : false);
+  const deleteOrder = (itemId) => {
+    const toDelete = basketValue?.menu?.filter((bv) => bv.itemId !== itemId);
+    setBasketValue({
+      menu: toDelete,
+    });
   };
 
-  const handleExpandedPoint = (open) => () => {
-    setExpandedPoint(open);
+  const handleCreateDiscount = (value) => {
+    setOrderValue((prev) => ({
+      ...prev,
+      discount: value,
+    }));
   };
+
+  const handleCreateprodRequsts = (value) => {
+    setOrderValue((prev) => ({
+      ...prev,
+      prodRequests: value,
+    }));
+  };
+
+  ///////////////////
+  useEffect(() => {
+    setOrderValue((prev) => ({
+      // note: "",
+      ...prev,
+      discount: {
+        phoneNumber: "",
+        spendPoint: 0,
+      },
+      prodRequests: [],
+    }));
+  }, []);
+
+  ////////
+  useEffect(() => {
+    setOrderPriceAll(0);
+    const price = basketValue?.menu?.reduce((sum, number) => {
+      return sum + (number.formPrice + number.optionsPrice) * number.count;
+    }, 0);
+    setOrderPriceAll((prev) => prev + price);
+    let prods = [];
+    basketValue?.menu?.forEach((e) => {
+      prods = [
+        ...prods,
+        {
+          prodFormId: e.formId,
+          quantity: e.count,
+          options: e.options?.map((opt) => ({ optionId: opt.optionId })),
+        },
+      ];
+    });
+    handleCreateprodRequsts(prods);
+  }, [basketValue]);
+
+  discountPoint =
+    orderValue?.discount?.spendPoint / setingShopData?.pointSpendRate;
 
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        {/* <StyledEngineProvider injectFirst> */}
-        <>
-          <Toolbar sx={{ fontSize: "40px" }}> ตะกร้า </Toolbar>
+    <div className="w-screen md:w-[30rem] h-screen">
+      <header className="w-full bg-base-100">
+        <div className="flex items-center justify-between text-base-content">
+          <p className="p-2 text-4xl stat-value">
+            {" "}
+            {userLanguage === "th" ? "ตะกร้า" : "Basket"}
+          </p>
+          <button
+            className=" btn btn-circle btn-link"
+            onClick={() => handleOpenBasket(false)}
+          >
+            <box-icon
+              name="x"
+              color="hsl(var(--bc) / var(--tw-text-opacity))"
+            ></box-icon>
+          </button>
+        </div>
+      </header>
 
-          <MainBox>
-            <BodymBox>
-              {bodyBoxs.map((b, index) => (
-                <Typography sx={{ fontSize: "2rem" }} key={index}>
-                  {b}
-                </Typography>
-              ))}
-            </BodymBox>
-            <BottomBox>
-              <StyledBox>
-                <Typography>ข้อความ</Typography>
-                <Accordion
-                  expanded={expandedBox === "panel1"}
-                  onChange={handleExpandedBox("panel1")}
-                  sx={{ width: "70%" }}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1bh-content"
-                    id="panel1bh-header"
-                  >
-                    <NoteIcon sx={{ width: "33%", flexShrink: 0 }} />
-                    <Typography sx={{ color: "text.secondary" }}>
-                      เพิ่มข้อความ
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    {/* <TextField
-                      multiline
-                      variant="filled"
-                      placeholder="ข้อความถึงผู้ขาย"
-                    /> */}
-                    <FormControl fullWidth variant="filled">
-                      <FilledInput
-                        size="small"
-                        placeholder="ข้อความถึงผู้ขาย"
-                        disableUnderline
-                        multiline
-                      />
-                    </FormControl>
-                  </AccordionDetails>
-                </Accordion>
-              </StyledBox>
-              <StyledBox>
-                <Typography>ล่วนลด</Typography>
+      <main className="flex flex-col h-full overflow-y-scroll pb-[16rem] bg-base-300 pt-2 scrollerBar">
+        {basketValue &&
+          basketValue?.menu?.map((bv) => (
+            <div
+              key={bv.itemId}
+              className="w-[97%] mb-3 ml-2 shadow-md card bg-base-100 text-base-content"
+            >
+              <button
+                className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
+                onClick={() => deleteOrder(bv.itemId)}
+              >
+                <box-icon
+                  name="trash-alt"
+                  type="solid"
+                  color="hsl(var(--bc) / var(--tw-text-opacity))"
+                ></box-icon>
+              </button>
+              <div className="card-body ">
+                <p className="card-title">
+                  {userLanguage === "th"
+                    ? bv.baseNameTh + " " + bv.formNameTh
+                    : bv.baseNameEng + " " + bv.formNameEng}
+                </p>
 
-                <Accordion
-                  //id="ac"
-                  expanded={expandedBox === "panel2"}
-                  onChange={handleExpandedBox("panel2")}
-                  sx={{ width: expandedBox === "panel2" ? "90%" : "70%" }}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel2bh-content"
-                    id="panel1bh-header"
-                  >
-                    <DiscountIcon sx={{ width: "33%", flexShrink: 0 }} />
-                    <Typography sx={{ color: "text.secondary" }}>
-                      เพิ่มส่วนลด
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <FormControl fullWidth variant="filled">
-                      <FillOneLine
-                        size="small"
-                        placeholder="เบอร์โทรศัพท์"
-                        disableUnderline
-                      />
-                      <Button
-                        variant="contained"
-                        onClick={handleExpandedPoint(true)}
+                <div className=" collapse collapse-arrow join-item">
+                  <input
+                    type="checkbox"
+                    name="my-accordion-4"
+                    defaultChecked={false}
+                    className="h-10 min-h-0"
+                  />
+                  <div className="flex items-center h-10 min-h-0 text-xl font-medium opacity-50 collapse-title">
+                    {userLanguage === "th" ? "รายละเอียด" : "detail"}
+                  </div>
+                  <div className="collapse-content">
+                    <div className="flex justify-between">
+                      <p>
+                        {userLanguage === "th"
+                          ? bv.baseNameTh + " " + bv.formNameTh
+                          : bv.baseNameEng + " " + bv.formNameEng}
+                      </p>
+                      <p className="text-end">{bv.formPrice}</p>
+                    </div>
+                    {bv.options?.map((opv, index) => (
+                      <div key={index} className="flex justify-between">
+                        <p>
+                          {userLanguage === "th"
+                            ? opv.optionNameTh
+                            : opv.optionNameEng}
+                        </p>
+                        <p className="text-end">{opv.price}</p>
+                      </div>
+                    ))}
+                    <div className="flex justify-start">
+                      <button
+                        className=" btn btn-link btn-xs"
+                        onClick={() => {
+                          handleEditMenuPopup(true);
+                          handleMenuEdit(bv.itemId);
+                        }}
                       >
-                        ตรวจสอบ
-                      </Button>
-                      {expandedPoint && (
-                        <>
-                          <Typography align="center">
-                            คุณมี : XXXX แต้ม
-                          </Typography>
-                          <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-evenly",
-                              flexDirection: "row",
-                            }}
-                          >
-                            <Typography>ใช้</Typography>
-                            <Box
-                              sx={{
-                                borderRadius: "20px",
-                                borderColor: "divider",
-                                borderWidth: 3,
-                              }}
-                            >
-                              <Button>+</Button>
-                              {/* value point */}
-                              100
-                              <Button>-</Button>
-                            </Box>
-                          </Box>
-                          <Button variant="contained">ใช้แต้มสะสม</Button>
-                          <Typography align="center" color="red">
-                            *{/* point rate  */}
-                            100 แต้ม = 1 บาท
-                          </Typography>
-                        </>
-                      )}
-                    </FormControl>
-                  </AccordionDetails>
-                </Accordion>
-              </StyledBox>
-              <StyledBox>
-                <Typography align="left" sx={{ fontSize: "2rem" }}>
-                  รวมราคา
-                </Typography>
-                <Typography
-                  align="right"
-                  sx={{ width: "50%", fontSize: "2rem" }}
-                >
-                  00000
-                </Typography>
-              </StyledBox>
-              <ConfirmButton variant="contained">
-                <Typography
-                  sx={{
-                    p: 2,
-                    color: "white",
-                    //"text.secondary"
-                  }}
-                >
-                  ยันยืนการสั่งซื่้อ
-                </Typography>
-              </ConfirmButton>
-            </BottomBox>
-          </MainBox>
-        </>
+                        <box-icon
+                          name="edit"
+                          type="solid"
+                          color="rgb(100 116 139)"
+                        ></box-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="card-actions">
+                  <p className="text-2xl">x {bv.count}</p>
+                  <p className="text-2xl text-end">
+                    ฿ {(bv.formPrice + bv.optionsPrice) * bv.count}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+      </main>
+      <footer className="absolute bottom-0 flex flex-col items-center w-full gap-2 py-2 justify-evenly bg-base-100">
+        <div className="w-full">
+          <article className="flex flex-row items-center justify-between mx-5 mb-1">
+            <aside
+              className={`w-full bg-white border shadow-md collapse collapse-arrow join-item border-base-300`}
+            >
+              <input
+                type="checkbox"
+                name="my-accordion-1"
+                className="h-10 min-h-0"
+                checked={openBox.box1}
+                onChange={() =>
+                  setOpenBox((prev) => ({
+                    ...prev,
+                    box1: !prev.box1,
+                  }))
+                }
+              />
+              <div className="flex items-center justify-between h-10 min-h-0 collapse-title text-slate-500">
+                <box-icon
+                  type="solid"
+                  name="note"
+                  color="rgb(100 116 139 / var(--tw-text-opacity))"
+                ></box-icon>
 
-        {/* </StyledEngineProvider> */}
-      </ThemeProvider>
-    </>
+                {orderValue?.note ? (
+                  <p className="w-1/2 font-medium ">
+                    {userLanguage === "th"
+                      ? "บันทึกข้อความแล้ว "
+                      : "Note Saved"}
+                  </p>
+                ) : (
+                  <p className="w-1/2 font-medium ">
+                    {" "}
+                    {userLanguage === "th" ? "เพิ่มข้อความ " : "Add Note"}
+                  </p>
+                )}
+              </div>
+              <div className="collapse-content">
+                <NoteBox setOpenBox={setOpenBox} />
+              </div>
+            </aside>
+          </article>
+          <article className="flex flex-row items-center justify-between mx-5 ">
+            <aside
+              className={`w-full bg-white border shadow-md collapse collapse-arrow join-item border-base-300`}
+            >
+              <input
+                type="checkbox"
+                name="my-accordion-2"
+                className="h-10 min-h-0"
+                checked={openBox.box2}
+                onChange={() =>
+                  setOpenBox((prev) => ({
+                    ...prev,
+                    box2: !prev.box2,
+                  }))
+                }
+              />
+              <div className="flex items-center justify-between h-10 min-h-0 collapse-title text-slate-500">
+                <box-icon
+                  type="solid"
+                  name="purchase-tag"
+                  color="rgb(100 116 139 / var(--tw-text-opacity))"
+                ></box-icon>
+                {orderValue?.discount?.spendPoint !== 0 ? (
+                  <p className="w-1/2 font-medium ">
+                    {userLanguage === "th" ? "ส่วนลด " : "Discount "}{" "}
+                    {discountPoint}
+                  </p>
+                ) : (
+                  <p className="w-1/2 font-medium ">
+                    {" "}
+                    {userLanguage === "th" ? "เพิ่มส่วนลด " : "Add Discount "}
+                  </p>
+                )}
+              </div>
+              <div className="collapse-content ">
+                <DiscountBox
+                  setingShopData={setingShopData}
+                  handleCreateDiscount={handleCreateDiscount}
+                  setOpenBox={setOpenBox}
+                />
+              </div>
+            </aside>
+          </article>
+        </div>
+
+        <article className="flex flex-row justify-between w-11/12 ">
+          <p className="text-4xl text-base-content stat-value">
+            {" "}
+            {userLanguage === "th" ? "รวมราคา" : "Total Price"}
+          </p>
+          {orderValue?.discount?.spendPoint !== 0 ? (
+            <p className="text-4xl font-medium text-cyan-500">
+              {orderPriceAll - discountPoint}{" "}
+            </p>
+          ) : (
+            <p className="text-4xl text-base-content stat-value">
+              {" "}
+              {orderPriceAll}{" "}
+            </p>
+          )}
+        </article>
+        <button
+          className="w-11/12 text-2xl text-white shadow-md btn btn-info bg-sky-500 "
+          onClick={() => sendCreateOrder()}
+        >
+          {userLanguage === "th" ? "ยันยืนการสั่งซื้อ" : "Confirm Order"}
+        </button>
+      </footer>
+    </div>
   );
 }
+
+// const fetcher = (url) => axios.post(url).then((res) => res.data.res);
+// const getDiscountPoint = (phoneNumber) => {
+//   const { data, error, isLoading } = useSWR(
+//     `${BaseURL}${findPoint}${phoneNumber}`,
+//     fetcher,
+//     {
+//       revalidateIfStale: false,
+//       revalidateOnFocus: false,
+//       revalidateOnReconnect: false,
+//     }
+//   );
+
+//   return {
+//     pointData: data,
+//     isLoading,
+//     isError: error,
+//   };
+// };

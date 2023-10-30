@@ -1,0 +1,34 @@
+
+version: "3.4"
+services:
+ vite_docker:
+   image: node:alpine
+   container_name: vite_docker
+   entrypoint: /bin/sh
+   ports:
+     - 3000:3000
+   working_dir: /srv/app
+   volumes:
+     - type: bind
+       source: ./
+       target: /srv/app
+   tty: true
+
+
+
+
+  # web:
+  #   container_name: react_cafe
+  #   image: docker-react
+  #   build:
+  #     context: ../../frontend/cafe-fontend-demo/cafe-demo/
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "5173:5173"
+  #   volumes:
+  #     - /app/node_modules
+  #     - .:/app
+  #   environment:
+  #     - NODE_ENV=development
+  #   networks:
+  #     - backend

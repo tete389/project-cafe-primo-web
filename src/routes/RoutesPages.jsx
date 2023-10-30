@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "../pages/Home";
 import Error from "../pages/Error";
 import EmployeeLayout from "../pages/employee/EmployeeLayout";
-import Dashboard from "../pages/employee/Dashboard";
+import Report from "../pages/employee/Report";
 import Product from "../pages/Product";
 import Order from "../pages/Order";
 import EmpLogin from "../pages/employee/EmpLogin";
@@ -14,9 +14,13 @@ import ProtectRoute from "./ProtectRoute";
 
 /////
 import Store from "../pages/Store";
-//import Menu, {loaderMenu as menuInCategory } from "../pages/Menu";
-//import MenuPopup, {loaderMenuPopUp as menuOtion} from "../components/MenuPopup";
-
+import MenuProduct from "../pages/employee/MenuProduct";
+import MenuCategory from "../pages/employee/MenuCategory";
+import MenuMaterial from "../pages/employee/MenuMaterial";
+import MenuAddOn from "../pages/employee/MenuAddOn";
+import StoreSetting from "../pages/employee/StoreSetting";
+import Record from "../pages/employee/Record";
+import OrderEdit from "../pages/employee/OrderEdit";
 
 const router = createBrowserRouter([
   {
@@ -32,16 +36,47 @@ const router = createBrowserRouter([
             element: <EmployeeLayout />,
             children: [
               {
-                path: "dashboard",
-                element: <Dashboard />,
+                path: "report",
+                element: <Report />,
               },
               {
                 path: "product",
                 element: <Product />,
+                children: [
+                  {
+                    path: "menuProduct",
+                    element: <MenuProduct />,
+                  },
+                  {
+                    path: "menuMaterial",
+                    element: <MenuMaterial />,
+                  },
+                  {
+                    path: "menuCategory",
+                    element: <MenuCategory />,
+                  },
+                  {
+                    path: "menuAddOn",
+                    element: <MenuAddOn />,
+                  },
+                ],
               },
               {
                 path: "order",
                 element: <Order />,
+              },
+
+              {
+                path: "orderEdit",
+                element: <OrderEdit />,
+              },
+              {
+                path: "record",
+                element: <Record />,
+              },
+              {
+                path: "storeSetting",
+                element: <StoreSetting />,
               },
             ],
           },
@@ -52,35 +87,14 @@ const router = createBrowserRouter([
         path: "login",
         element: <EmpLogin />,
       },
-      {
-        path: "register",
-        element: <EmpLogin />,
-      },
+
       {
         path: "store",
         element: <Store />,
-        //loader: categoryAll,
-        children: [
-          {
-            // path: ":cateId",
-            // element: <Menu />,
-            //loader: menuInCategory,
-            // children: [
-            //   {
-            //     path: ":menu",
-            //     element: <MenuPopup />,
-            //      loader: menuOtion,
-            //   }
-            // ]
-          },
-          
-        ],
       },
     ],
   },
 ]);
-
-//let theme = createTheme({});
 
 export default function RoutesPages() {
   return <RouterProvider router={router} />;

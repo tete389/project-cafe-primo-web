@@ -1,144 +1,162 @@
-import React, { useEffect, useState } from "react";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import Box from "@mui/material/Box";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+/* eslint-disable react/prop-types */
+import { useContext, useEffect, useState } from "react";
+import { EmployeeContext } from "./EmployeeLayout";
 
 import { useNavigate } from "react-router-dom";
+import "boxicons";
 
 
 const categories = [
   {
-    id: "Build",
+    id: 100,
+    mainTitle: "ส่วนหลัก",
     children: [
       {
-        id: "Dashboard",
-        //icon: <PeopleIcon />,
-        navigete: "/dashboard",
+        id: 101,
+        subTitle: "คำสั่งซื้อ",
+        icon: <box-icon name="basket" color="#272727"></box-icon>,
+        navigete: "/orderEdit",
       },
       {
-        id: "Product",
-        // icon: <DnsRoundedIcon />
-        navigete: "/product",
+        id: 102,
+        subTitle: "ประวัติ",
+        icon: (
+          <box-icon type="solid" name="spreadsheet" color="#272727"></box-icon>
+        ),
+        navigete: "/record",
       },
+
       {
-        id: "Storage",
-        //icon: <PermMediaOutlinedIcon />,
-      },
-      {
-        id: "Hosting",
-        //icon: <PublicIcon />,
-      },
-      {
-        id: "Functions",
-        //icon: <SettingsEthernetIcon />,
-      },
-      {
-        id: "Machine learning",
-        //icon: <SettingsInputComponentIcon />,
+        id: 103,
+        subTitle: "รายงาน",
+        icon: <box-icon type="solid" name="report" color="#272727"></box-icon>,
+
+        navigete: "/report",
       },
     ],
   },
   {
-    id: "Quality",
+    id: 200,
+    mainTitle: "การจัดการ",
     children: [
       {
-        id: "Analytics",
-        //icon: <SettingsIcon />
-      },
-      {
-        id: "Performance",
-        //icon: <TimerIcon />
-      },
-      {
-        id: "Test Lab",
-        //icon: <PhonelinkSetupIcon />
+        id: 202,
+        subTitle: "สินค้า",
+        icon: <box-icon name="package"></box-icon>,
+        navigete: "/product",
       },
     ],
   },
 ];
 
-const item = {
-  py: "2px",
-  px: 3,
-  color: "rgba(255, 255, 255, 0.7)",
-  "&:hover, &:focus": {
-    bgcolor: "rgba(255, 255, 255, 0.08)",
-  },
-};
-
-const itemCategory = {
-  boxShadow: "0 -1px 0 rgb(255,255,255,0.1) inset",
-  py: 1.5,
-  px: 3,
-};
-
-
-
-
-export default function EmpDrawer(props) {
-  const { ...other } = props;
+export default function EmpDrawer() {
+  // const { handleOpenSetting } = params;
   let navigate = useNavigate();
 
-  const [pageSelect, setPageSelect] = useState({
-    subSelect: localStorage.getItem("subSelect") || "",
-    mainSelect: localStorage.getItem("mainSelect") || "",
-  });
+  const { notifications, setingShopData } = useContext(EmployeeContext);
 
-  const handlePageSelect = (indexSub, indexMain) => {
-    setPageSelect({
-      subSelect: indexSub,
-      mainSelect: indexMain,
-    });
-    localStorage.setItem("subSelect", indexSub);
-    localStorage.setItem("mainSelect", indexMain);
-  };
+  const [currentTime, setCurrentTime] = useState("");
 
-  console.log(pageSelect);
+  useEffect(() => {
+    const currentTh = new Date()
+      .toLocaleString({
+        timeZone: "Asia/Bangkok",
+      })
+      .split(" ")[1];
+    setCurrentTime(currentTh);
+  }, []);
 
   return (
-    <Drawer variant="permanent" {...other}>
-      <List disablePadding>
-        <ListItem
-          sx={{ ...item, ...itemCategory, fontSize: 22, color: "#fff" }}
-        >
-          Paperbase
-        </ListItem>
-        <ListItem sx={{ ...item, ...itemCategory }}>
-          <ListItemIcon>{/* <HomeIcon /> */}</ListItemIcon>
-          <ListItemText>Project Overview</ListItemText>
-        </ListItem>
-        {categories.map(({ id: cateId, children }, indexMain) => (
-          <Box key={cateId} sx={{ bgcolor: "#101F33" }}>
-            <ListItem sx={{ py: 2, px: 3 }}>
-              <ListItemText sx={{ color: "#fff" }}>{cateId}</ListItemText>
-            </ListItem>
-            {children.map(({ id: childId, icon, navigete }, indexSub) => (
-              <ListItem disablePadding key={childId}>
-                <ListItemButton
-                  selected={
-                    indexSub == pageSelect.subSelect &&
-                    indexMain == pageSelect.mainSelect
-                  }
-                  sx={item}
-                  onClick={() => {
-                    handlePageSelect(indexSub, indexMain);
-                    navigate(navigete);
-                  }}
-                >
-                  <ListItemIcon>{icon}</ListItemIcon>
-                  <ListItemText>{childId}</ListItemText>
-                </ListItemButton>
-              </ListItem>
-            ))}
-            <Divider sx={{ mt: 2 }} />
-          </Box>
+    <div className="flex flex-col justify-between h-[97vh] ">
+      <div>
+        {categories.map(({ id: cateId, children }) => (
+          <div key={cateId}>
+            <ul className="menu bg-base-100 rounded-box">
+              {children.map(({ id: childId, subTitle, icon, navigete }) => (
+                <div key={childId}>
+                  <li onClick={() => navigate(navigete)}>
+                    <a className="w-36">
+                      {icon}
+                      <span className="flex flex-wrap w-16">{subTitle}</span>
+
+                      {subTitle === "คำสั่งซื้อ" &&
+                      notifications?.countOrderNotPayment &&
+                      notifications?.countOrderNotPayment !== "0" ? (
+                        <span className="badge badge-sm badge-primary">
+                          {notifications?.countOrderNotPayment}{" "}
+                        </span>
+                      ) : subTitle === "สินค้า" &&
+                        notifications?.countMaterialLowStock &&
+                        notifications?.countMaterialLowStock !== "0" ? (
+                        <span className="badge badge-sm badge-primary">
+                          {notifications?.countMaterialLowStock}
+                        </span>
+                      ) : (
+                        <span className="badge-sm"></span>
+                      )}
+
+                      {/* {subTitle === "สินค้า" &&
+                      notifications?.countMaterialLowStock !== "0" ? (
+                        <span className="badge badge-sm badge-primary">
+                          {notifications?.countMaterialLowStock}
+                        </span>
+                      ) : (
+                        <span className="badge-sm"></span>
+                      )} */}
+                    </a>
+                  </li>
+                </div>
+              ))}
+            </ul>
+            <div className="mt-4"></div>
+          </div>
         ))}
-      </List>
-    </Drawer>
+      </div>
+
+      <div>
+        <ul className="menu bg-base-100 rounded-box">
+          <li
+            onClick={
+              () => navigate("/storeSetting")
+              // () => handleOpenSetting()
+              // axios.post(`${BaseURL}/order/getCustomerNotifications`);
+            }
+          >
+            <a>
+              <box-icon name="home" color="#272727"></box-icon> ร้าน
+            </a>
+          </li>
+
+          <li>
+            <a>
+              สถานะ
+              {setingShopData?.isOpenShop ? (
+                <span className=" badge badge-lg badge-success text-base-content">
+                  เปิด
+                </span>
+              ) : setingShopData?.isCloseShop ? (
+                <span className=" badge badge-lg badge-warning text-base-content">
+                  ปิด
+                </span>
+              ) : currentTime > setingShopData?.openDate &&
+                currentTime < setingShopData?.closedDate ? (
+                <span className=" badge badge-lg badge-success text-base-content">
+                  เปิด
+                </span>
+              ) : (
+                <span className=" badge badge-lg badge-warning text-base-content">
+                  ปิด
+                </span>
+              )}
+              {/* {setingShopData?.isOpenShop ? (
+                <span className="badge badge-md badge-success">เปิด</span>
+              ) : (
+                <span className="badge badge-md badge-warning">ปิด</span>
+              )} */}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
   );
 }

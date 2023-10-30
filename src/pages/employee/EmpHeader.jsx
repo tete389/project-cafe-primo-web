@@ -1,122 +1,64 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-// import HelpIcon from '@mui/icons-material/Help';
-import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
-// import MenuIcon from '@mui/icons-material/Menu';
-// import NotificationsIcon from '@mui/icons-material/Notifications';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
+/* eslint-disable react/prop-types */
 
-const lightColor = 'rgba(255, 255, 255, 0.7)';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-function EmpHeader( props ) {
-    const { onDrawerToggle, logout } = props;
+function EmpHeader(props) {
+  const { onDrawerToggle } = props;
+  const navigate = useNavigate();
 
-    return (
-      <>
-        <AppBar color="primary" position="sticky" elevation={0}>
-          <Toolbar>
-            <Grid container spacing={1} alignItems="center">
-              <Grid sx={{ display: { sm: 'none', xs: 'block' } }} item>
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  onClick={onDrawerToggle}
-                  edge="start"
-                >
-                  {/* <MenuIcon /> */}
-                </IconButton>
-              </Grid>
-              <Grid item xs />
-              <Grid item>
-                <Link
-                  href="/"
-                  variant="body2"
-                  sx={{
-                    textDecoration: 'none',
-                    color: lightColor,
-                    '&:hover': {
-                      color: 'common.white',
-                    },
-                  }}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Go to docs
-                </Link>
-              </Grid>
-              <Grid item>
-                <Tooltip title="Alerts • No alerts">
-                  <IconButton color="inherit">
-                    {/* <NotificationsIcon /> */}
-                  </IconButton>
-                </Tooltip>
-              </Grid>
-              <Grid item>
-                <IconButton color="inherit" sx={{ p: 0.5 }}>
-                  {/* <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" /> */}
-                </IconButton>
-              </Grid>
-            </Grid>
-          </Toolbar>
-        </AppBar>
-        <AppBar
-          component="div"
-          color="primary"
-          position="static"
-          elevation={0}
-          sx={{ zIndex: 0 }}
-        >
-          <Toolbar>
-            <Grid container alignItems="center" spacing={1}>
-              <Grid item xs>
-                <Typography color="inherit" variant="h5" component="h1">
-                  Authentication
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Button
-                  sx={{ borderColor: lightColor }}
-                  variant="outlined"
-                  color="inherit"
-                  size="small"
-                  onClick={logout}
-                >
-                  Web setup
-                </Button>
-              </Grid>
-              <Grid item>
-                <Tooltip title="Help">
-                  <IconButton color="inherit">
-                    {/* <HelpIcon /> */}
-                  </IconButton>
-                </Tooltip>
-              </Grid>
-            </Grid>
-          </Toolbar>
-        </AppBar>
-        <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
-          <Tabs value={0} textColor="inherit">
-            <Tab label="Users" />
-            <Tab label="Sign-in method" />
-            <Tab label="Templates" />
-            <Tab label="Usage" />
-          </Tabs>
-        </AppBar>
-      </>
-    );
+  const hadleLogOut = () => {
+    localStorage.setItem("loggedIn", JSON.stringify({}));
+    handleOnClose();
+  };
+
+  let timeToOut;
+  const handleOnClose = () => {
+    timeToOut = setTimeout(() => {
+      navigate("/login");
+    }, 500);
+  };
+
+  useEffect(() => {
+    return () => clearTimeout(timeToOut);
+  }, [timeToOut]);
+
+  return (
+    <div className="fixed max-w-full bg-base-100 navbar lg:pr-[188px] z-[8999]">
+      <div className="flex-none">
+        <div>{onDrawerToggle}</div>
+      </div>
+      <div className="flex-1">
+        <a className="pl-2 text-xl normal-case btn btn-ghost text-base-content ">
+          Kaffe Primo
+        </a>
+      </div>
+      <div className="flex-none">
+        <div className="dropdown dropdown-end">
+          <label tabIndex={0} className="btn btn-ghost rounded-btn">
+            <box-icon
+              name="dots-horizontal-rounded"
+              color="hsl(var(--bc) / var(--tw-bg-opacity))"
+            ></box-icon>
+          </label>
+          <ul
+            tabIndex={0}
+            className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-40 mt-4"
+          >
+            <li>
+              <a
+                className="flex flex-row justify-around"
+                onClick={() => hadleLogOut()}
+              >
+                <box-icon name="log-out"></box-icon>
+                <span>ล็อกเอาท์</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-EmpHeader.propTypes = {
-    onDrawerToggle: PropTypes.func.isRequired,
-}
-
-export default EmpHeader
+export default EmpHeader;

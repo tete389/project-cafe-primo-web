@@ -1,0 +1,16 @@
+.alert-error-2 {
+    border-color: hsl(var(--su) / 0.2);
+    --tw-text-opacity: 1;
+    color:red;
+    --alert-bg:hsl(var(--su));
+    --alert-bg-mix: hsl(var(--b1));
+}
+
+
+/* .alert-success {
+    border-color: hsl(var(--su) / 0.2);
+    --tw-text-opacity: 1;
+    color: hsl(var(--suc) / var(--tw-text-opacity));
+    --alert-bg: hsl(var(--su));
+    --alert-bg-mix: hsl(var(--b1));
+} */

@@ -4,7 +4,7 @@ import  selectReducer  from "../features/selectSlice";
 export const store = configureStore({
     reducer: {
 
-      selectPageIndex: selectReducer,
+      selectMenus: selectReducer,
 
     },
   })
