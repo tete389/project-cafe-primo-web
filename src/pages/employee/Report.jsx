@@ -20,7 +20,7 @@ import useScreenSize from "../useScreenSize";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Dashboard() {
-  // const dateStart = `2023-10-01`;
+  const dateStart = `2023-10-01`;
 
   const currentTh1 = new Date()
     .toLocaleString("en-US", {
