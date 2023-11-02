@@ -83,7 +83,7 @@ export default function DialogCreateProduct(params) {
 
   useEffect(() => {
     return () => clearTimeout(timeToOut);
-  }, []);
+  }, [timeToOut]);
 
   return (
     <>

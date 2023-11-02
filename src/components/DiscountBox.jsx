@@ -160,7 +160,7 @@ export default function DiscountBox(props) {
             </div>
             <div className="grid grid-cols-3 join">
               <button
-                className=" join-item btn btn-outline btn-sm rounded-l-3xl"
+                className=" join-item btn btn-ghost btn-active btn-sm rounded-l-3xl"
                 onClick={() => fixUsePoint(-100, usePoint)}
               >
                 -
@@ -172,7 +172,7 @@ export default function DiscountBox(props) {
                 <p className="text-2xl text-sky-400">{usePoint}</p>
               </button>
               <button
-                className=" join-item btn btn-outline btn-sm rounded-r-3xl"
+                className=" join-item btn btn-ghost btn-active btn-sm rounded-r-3xl"
                 onClick={() => fixUsePoint(100, usePoint)}
               >
                 +

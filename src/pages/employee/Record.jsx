@@ -49,7 +49,10 @@ export default function Record() {
         </p>
       </div>
       <div className="container h-screen mx-auto overflow-hidden pb-[190px] sm:max-w-lg md:mx-0 md:ml-10">
-        <TabBody handleOpenRecordDetail={handleOpenRecordDetail} />
+        <TabBody
+          openDrawerRight={openDrawerRight}
+          handleOpenRecordDetail={handleOpenRecordDetail}
+        />
       </div>
 
       {/* Drawer */}
@@ -114,7 +117,7 @@ function ByCassStatus(params) {
 }
 
 function TabBody(params) {
-  const { handleOpenRecordDetail } = params;
+  const { openDrawerRight, handleOpenRecordDetail } = params;
 
   const currentTh = new Date(
     new Date().toLocaleString("en-US", {
@@ -151,6 +154,7 @@ function TabBody(params) {
         <ListRecentOrder
           currentTh={currentTh}
           selectDate={selectDate}
+          openDrawerRight={openDrawerRight}
           handleOpenRecordDetail={handleOpenRecordDetail}
         />
       </section>
@@ -159,7 +163,8 @@ function TabBody(params) {
 }
 
 function ListRecentOrder(params) {
-  const { currentTh, selectDate, handleOpenRecordDetail } = params;
+  const { currentTh, selectDate, openDrawerRight, handleOpenRecordDetail } =
+    params;
 
   const date = `${currentTh.getFullYear()}-${
     currentTh.getMonth() + 1
@@ -210,7 +215,11 @@ function ListRecentOrder(params) {
           className="w-full "
           onClick={() => handleOpenRecordDetail(true, e.orderId)}
         >
-          <div className={`w-full  shadow-md  bg-base-100`}>
+          <div
+            className={`w-full   shadow-md   ${
+              openDrawerRight.id === e.orderId ? `bg-base-200` : `bg-base-100`
+            }`}
+          >
             <div className="card-body">
               <div className="flex flex-row justify-between card-title">
                 <div className="flex flex-col gap-1">

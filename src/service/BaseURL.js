@@ -117,7 +117,8 @@ export const findRecentOrderDetailAll = `${findRecentMaterial}&recentProduct=tru
 ///// point Url
 export const point = "/customer"
 export const findPoint = `${point}/getPoint?phoneNumber=`
-
+export const collectPoint = `${point}/collectPoints`
+export const spendPoint = `${point}/spendPoint`
 
 ///// emp Url
 export const emp = "/employee"

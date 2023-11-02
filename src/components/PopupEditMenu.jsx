@@ -134,9 +134,9 @@ export default function PopupEditMenu(props) {
             ? filterEditProduct.baseNameTh
             : filterEditProduct.baseNameEng}
         </p>
-        <p className="text-2xl font-medium">
+        {/* <p className="text-2xl font-medium">
           {userLanguage === "th" ? "(แก้ไข)" : "(Edit)"}
-        </p>
+        </p> */}
         <button
           className="btn btn-circle btn-link"
           onClick={() => handleEditMenuPopup(false)}

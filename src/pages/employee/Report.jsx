@@ -85,8 +85,6 @@ export default function Dashboard() {
   //   return result;
   // };
 
-
-
   const incomeOfDay = (listOrder) => {
     if (!listOrder || listOrder.length === 0) {
       return 0;
@@ -100,6 +98,8 @@ export default function Dashboard() {
     return result;
   };
 
+  console.log(recentOrder);
+
   const resultOrderToDay = recentOrder?.listOrder?.map((ord) => ord.status);
   const resultStatusToday = [...new Set(resultOrderToDay)]?.map((f) => {
     let count = 0;
@@ -110,46 +110,6 @@ export default function Dashboard() {
     });
     return { status: f, quantity: count };
   });
-
-  const resultStatuSucOrder = () => {
-    if (!resultStatusToday || resultStatusToday.length === 0) {
-      return 0;
-    }
-    const filterSuccessOrder = resultStatusToday?.find(
-      (f) => f.status === "Success"
-    );
-    return filterSuccessOrder.quantity;
-  };
-
-  const resultStatusWait = () => {
-    if (!resultStatusToday || resultStatusToday.length === 0) {
-      return 0;
-    }
-    const filterSuccessOrder = resultStatusToday?.find(
-      (f) => f.status === "Payment"
-    );
-    return filterSuccessOrder.quantity;
-  };
-
-  const resultStatusSucPayment = () => {
-    if (!resultStatusToday || resultStatusToday.length === 0) {
-      return 0;
-    }
-    const filterSuccessOrder = resultStatusToday?.find(
-      (f) => f.status === "Making"
-    );
-    return filterSuccessOrder.quantity;
-  };
-
-  const resultStatusCancel = () => {
-    if (!resultStatusToday || resultStatusToday.length === 0) {
-      return 0;
-    }
-    const filterSuccessOrder = resultStatusToday?.find(
-      (f) => f.status === "Cancel"
-    );
-    return filterSuccessOrder.quantity;
-  };
 
   return (
     <main className="pt-16 ">
@@ -166,7 +126,8 @@ export default function Dashboard() {
                 <div className="stat-figure"></div>
                 <div className="stat-title">รายได้สัปดาห์นี้</div>
                 <div className="stat-value">
-                  {recentOrder?.incomeOfWeek ? recentOrder?.incomeOfWeek : 0}{" "}
+                  {/* {recentOrder?.incomeOfWeek ? recentOrder?.incomeOfWeek : 0}{" "} */}
+                  160
                 </div>
                 <div className="stat-desc">บาท</div>
               </div>
@@ -208,7 +169,10 @@ export default function Dashboard() {
               <div className="stat-desc">รายการ</div>
             </div>
           </div>
-
+          <TabStatusOrder
+            recentOrder={recentOrder}
+            resultStatusToday={resultStatusToday}
+          />
           <div className="flex flex-col justify-between w-full pt-1 lg:flex-row">
             <div className="lg:w-[66%] table-sm lg:table-md overflow-x-auto rounded-t-lg lg:rounded-lg bg-base-100  h-72">
               <TableOrder listOrder={recentOrder?.listOrder} />
@@ -220,42 +184,6 @@ export default function Dashboard() {
                   resultStatusToday={resultStatusToday}
                 />
               )}
-            </div>
-          </div>
-
-          <div className="w-full mt-1 shadow stats scrollerBar stats-horizontal">
-            <div className="p-0 text-center stat">
-              <div className="stat-figure"></div>
-              <div className="stat-title">รอชำระเงิน</div>
-              <div className="stat-value">
-                {recentOrder?.listOrder ? resultStatusWait() : 0}{" "}
-              </div>
-              <div className="stat-desc">รายการ</div>
-            </div>
-
-            <div className="p-0 text-center stat">
-              <div className="stat-figure"></div>
-              <div className="stat-title">ชำระเงินแล้ว</div>
-              <div className="stat-value">
-                {recentOrder?.listOrder ? resultStatusSucPayment() : 0}{" "}
-              </div>
-              <div className="stat-desc">รายการ</div>
-            </div>
-            <div className="p-0 text-center stat">
-              <div className="stat-figure"></div>
-              <div className="stat-title">สำเร็จ</div>
-              <div className="stat-value">
-                {recentOrder?.listOrder ? resultStatuSucOrder() : 0}{" "}
-              </div>
-              <div className="stat-desc">รายการ</div>
-            </div>
-            <div className="p-0 text-center stat">
-              <div className="stat-figure"></div>
-              <div className="stat-title">ยกเลิก</div>
-              <div className="stat-value">
-                {recentOrder?.listOrder ? resultStatusCancel() : 0}{" "}
-              </div>
-              <div className="stat-desc">รายการ</div>
             </div>
           </div>
 
@@ -283,6 +211,123 @@ export default function Dashboard() {
         </section>
       </div>
     </main>
+  );
+}
+
+function TabStatusOrder(params) {
+  const { recentOrder, resultStatusToday } = params;
+
+  const resultStatuSuccess = () => {
+    if (!resultStatusToday || resultStatusToday.length === 0) {
+      return 0;
+    }
+    const filterSuccessOrder = resultStatusToday?.find(
+      (f) => f.status === "Success"
+    );
+    if (filterSuccessOrder) {
+      return filterSuccessOrder?.quantity;
+    }
+    return 0;
+  };
+
+  const resultStatuReceive = () => {
+    if (!resultStatusToday || resultStatusToday.length === 0) {
+      return 0;
+    }
+    const filterSuccessOrder = resultStatusToday?.find(
+      (f) => f.status === "Receive"
+    );
+    if (filterSuccessOrder) {
+      return filterSuccessOrder?.quantity;
+    }
+    return 0;
+  };
+
+  const resultStatusPayment = () => {
+    if (!resultStatusToday || resultStatusToday.length === 0) {
+      return 0;
+    }
+    const filterSuccessOrder = resultStatusToday?.find(
+      (f) => f.status === "Payment"
+    );
+    if (filterSuccessOrder) {
+      return filterSuccessOrder?.quantity;
+    }
+    return 0;
+  };
+
+  const resultStatusMaking = () => {
+    if (!resultStatusToday || resultStatusToday.length === 0) {
+      return 0;
+    }
+    const filterSuccessOrder = resultStatusToday?.find(
+      (f) => f.status === "Making"
+    );
+    if (filterSuccessOrder) {
+      return filterSuccessOrder?.quantity;
+    }
+    return 0;
+  };
+
+  const resultStatusCancel = () => {
+    if (!resultStatusToday || resultStatusToday.length === 0) {
+      return 0;
+    }
+    const filterSuccessOrder = resultStatusToday?.find(
+      (f) => f.status === "Cancel"
+    );
+    if (filterSuccessOrder) {
+      return filterSuccessOrder?.quantity;
+    }
+    return 0;
+  };
+  return (
+    <>
+      <div className="w-full mt-1 shadow stats scrollerBar stats-horizontal">
+        <div className="p-0 text-center stat">
+          <div className="stat-figure"></div>
+          <div className="stat-title">รอชำระเงิน</div>
+          <div className="stat-value">
+            {recentOrder?.listOrder ? resultStatusPayment() : 0}{" "}
+          </div>
+          <div className="stat-desc">รายการ</div>
+        </div>
+
+        <div className="p-0 text-center stat">
+          <div className="stat-figure"></div>
+          <div className="stat-title">กำลังทำ</div>
+          <div className="stat-value">
+            {recentOrder?.listOrder ? resultStatusMaking() : 0}{" "}
+          </div>
+          <div className="stat-desc">รายการ</div>
+        </div>
+
+        <div className="p-0 text-center stat">
+          <div className="stat-figure"></div>
+          <div className="stat-title">รอรับสินค้า</div>
+          <div className="stat-value">
+            {recentOrder?.listOrder ? resultStatuReceive() : 0}{" "}
+          </div>
+          <div className="stat-desc">รายการ</div>
+        </div>
+        <div className="p-0 text-center stat">
+          <div className="stat-figure"></div>
+          <div className="stat-title">สำเร็จ</div>
+          <div className="stat-value">
+            {recentOrder?.listOrder ? resultStatuSuccess() : 0}{" "}
+          </div>
+          <div className="stat-desc">รายการ</div>
+        </div>
+        <div className="p-0 text-center stat">
+          <div className="stat-figure"></div>
+          <div className="stat-title">ยกเลิก</div>
+          <div className="stat-value">
+            {recentOrder?.listOrder ? resultStatusCancel() : 0}{" "}
+          </div>
+          <div className="stat-desc">รายการ</div>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -317,13 +362,36 @@ function TableOrder(params) {
               <td>{manageDate(e.orderDate)}</td>
               <td>{e.customerName}</td>
               <td>{e.orderPrice}</td>
-              <th>{e.status}</th>
+              <th>
+                <ByCassStatus status={e.status} />
+              </th>
             </tr>
           ))}
         </tbody>
       </table>
     </>
   );
+}
+
+function ByCassStatus(params) {
+  const { status } = params;
+
+  switch (status) {
+    case "Payment":
+      return <>รอชำระเงิน</>;
+    case "Making":
+      return <>กำลังทำ</>;
+    case "Receive":
+      return <>รอรับสินค้า</>;
+    case "Success":
+      return <>สำเร็จออเดอร์</>;
+    case "Keep":
+      return <>ภายหลัง</>;
+    case "Cancel":
+      return <>ยกเลิก</>;
+    default:
+      return <></>;
+  }
 }
 
 function RecentOrderIncomeChart(params) {
@@ -415,7 +483,26 @@ function RecentOrderStatusToDayChart(params) {
     (a, b) => b.quantity - a.quantity
   );
 
-  const resultStatus = resultStatusHigh?.map((p) => p.status);
+  const ByStatus = (status) => {
+    switch (status) {
+      case "Payment":
+        return "รอชำระเงิน";
+      case "Making":
+        return "กำลังทำ";
+      case "Receive":
+        return "รอรับสินค้า";
+      case "Success":
+        return "สำเร็จออเดอร์";
+      case "Keep":
+        return "ภายหลัง";
+      case "Cancel":
+        return "ยกเลิก";
+      default:
+        return "";
+    }
+  };
+
+  const resultStatus = resultStatusHigh?.map((p) => ByStatus(p.status));
   const resultStatusQuantity = resultStatusHigh?.map((p) => p.quantity);
   const resultRandomColor = resultStatusHigh?.map(() => {
     return randomColor({ luminosity: "light" });

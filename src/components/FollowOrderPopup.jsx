@@ -6,6 +6,7 @@ import useSWR from "swr";
 import axios from "axios";
 import ResLoadingScreen from "./ResLoadingScreen";
 import ResErrorScreen from "./ResErrorScreen";
+import DialogCollectPoint from "./DialogCollectPoint";
 
 export default function FollowOrderPopup(params) {
   const { handleOpenFollowOrder, followOrder, setfollowOrder } = params;
@@ -60,7 +61,7 @@ export default function FollowOrderPopup(params) {
         {followOrder?.map((e, index) => (
           <div
             key={index}
-            className="w-[97%] mb-3 ml-2 shadow-md card bg-base-100 text-base-content"
+            className="mx-2 mb-3 shadow-md  card bg-base-100 text-base-content"
           >
             <button
               className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
@@ -109,8 +110,11 @@ export default function FollowOrderPopup(params) {
 function FollowOrderDetail(params) {
   const { orderId } = params;
   const userLanguage = useContext(LanguageContext);
-
-  const { detailOrder, detailError, detailLoading } = getOrderDetail(orderId);
+  const orderUrl = `${BaseURL}${findOrderById}${orderId}&${haveOrderDetail}`;
+  const { detailOrder, detailError, detailLoading } = getOrderDetail(
+    orderId,
+    orderUrl
+  );
 
   if (detailLoading) {
     return <ResLoadingScreen />;
@@ -249,6 +253,14 @@ function FollowOrderDetail(params) {
               />
             </p>
           </div>
+          {detailOrder.status === "Success" && (
+            <ButtonTabTakePoints
+              orderId={detailOrder?.orderId}
+              orderDetailPoint={detailOrder?.orderDetailPoint}
+              orderUrl={orderUrl}
+              orderPrice={detailOrder?.orderPrice}
+            />
+          )}
         </>
       ) : (
         <>
@@ -256,6 +268,58 @@ function FollowOrderDetail(params) {
           <p> {userLanguage === "th" ? "กำลังค้นหาข้อมูล" : "Searching"}</p>
         </>
       )}
+    </>
+  );
+}
+
+function ButtonTabTakePoints(params) {
+  const { orderId, orderDetailPoint, orderUrl, orderPrice } = params;
+
+  // mutate(orderUrl)
+
+  const filterTakePoint = orderDetailPoint?.some(
+    (e) => e.action === "Collect Points"
+  );
+
+  const [openCollect, setOpenCollect] = useState(false);
+
+  // console.log(setingShopData);
+
+  const handleOpenCollect = () => {
+    setOpenCollect(true);
+    window.my_modal_CollectPoint.showModal();
+  };
+
+  const handleCloseCollect = () => {
+    // window.my_modal_CollectPoint.close();
+    setOpenCollect(false);
+  };
+
+  return (
+    <>
+      <div className="flex justify-center pt-4">
+        {filterTakePoint ? (
+          <button className="btn btn-disabled">รับแต้มสะสมแล้ว</button>
+        ) : (
+          <button
+            className="btn btn-success text-base-100"
+            onClick={() => handleOpenCollect()}
+          >
+            รับแต้มสะสม
+          </button>
+        )}
+      </div>
+
+      <dialog id="my_modal_CollectPoint" className="modal">
+        {openCollect && (
+          <DialogCollectPoint
+            orderId={orderId}
+            handleCloseCollect={handleCloseCollect}
+            orderPrice={orderPrice}
+            orderUrl={orderUrl}
+          />
+        )}
+      </dialog>
     </>
   );
 }
@@ -271,7 +335,7 @@ function ByCassStatus(params) {
         </>
       );
 
-      case "Keep":
+    case "Keep":
       return (
         <>
           {userLanguage === "th" ? "อยู่ระหว่างรอการชำระเงิน" : "Wait Payment"}
@@ -302,7 +366,9 @@ function ByCassStatus(params) {
 
     case "Cancel":
       return (
-        <>{userLanguage === "th" ? "คำสั่งถูกยกเลิก" : "Order has cancel"}</>
+        <>
+          {userLanguage === "th" ? "คำสั่งซื้อถูกยกเลิก" : "Order has cancel"}
+        </>
       );
     default:
       return (
@@ -316,14 +382,10 @@ function ByCassStatus(params) {
 }
 
 const fetcherOrderSelect = (url) => axios.get(url).then((res) => res.data.res);
-const getOrderDetail = (orderId) => {
-  const { data, error, isLoading } = useSWR(
-    `${BaseURL}${findOrderById}${orderId}&${haveOrderDetail}`,
-    fetcherOrderSelect,
-    {
-      revalidateOnFocus: false,
-    }
-  );
+const getOrderDetail = (orderId, orderUrl) => {
+  const { data, error, isLoading } = useSWR(orderUrl, fetcherOrderSelect, {
+    revalidateOnFocus: false,
+  });
   return {
     detailOrder: data,
     detailOrderLoading: isLoading,

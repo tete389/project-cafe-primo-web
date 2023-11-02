@@ -15,13 +15,12 @@ import {
 export default function BasketPopup(props) {
   const {
     handleOpenBasket,
-    setingShopData,
     sendCreateOrder,
     handleEditMenuPopup,
     handleMenuEdit,
   } = props;
 
-  const { basketValue, setBasketValue } = useContext(BasketValueContext);
+  const { basketValue, setBasketValue, setingShopData } = useContext(BasketValueContext);
   const { orderValue, setOrderValue } = useContext(OrderValueContext);
   const userLanguage = useContext(LanguageContext);
 
@@ -120,7 +119,7 @@ export default function BasketPopup(props) {
           basketValue?.menu?.map((bv) => (
             <div
               key={bv.itemId}
-              className="w-[97%] mb-3 ml-2 shadow-md card bg-base-100 text-base-content"
+              className="mx-2 mb-3 shadow-md card bg-base-100 text-base-content"
             >
               <button
                 className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"

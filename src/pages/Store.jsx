@@ -186,7 +186,6 @@ export default function Store() {
     }
   }, []);
 
-
   if (isError || isErrorSetingShop) {
     return <ResErrorScreen />;
   }
@@ -222,8 +221,10 @@ export default function Store() {
 
   //  check open shop by time
   if (
-    currentTime > setingShopData?.closedDate &&
-    setingShopData?.openDate < currentTime &&
+    !(
+      currentTime > setingShopData?.openDate &&
+      currentTime < setingShopData?.closedDate
+    ) &&
     !setingShopData?.isOpenShop
   ) {
     return (
@@ -249,6 +250,7 @@ export default function Store() {
     );
   }
 
+  console.log(currentTime);
   return (
     <LanguageContext.Provider value={userLanguage}>
       <ToastContext.Provider
@@ -257,7 +259,9 @@ export default function Store() {
         <AppBarStore setUserLanguage={setUserLanguage} />
         {/* {!openNotifyOrder ? ( */}
         <>
-          <BasketValueContext.Provider value={{ basketValue, setBasketValue }}>
+          <BasketValueContext.Provider
+            value={{ basketValue, setBasketValue, setingShopData }}
+          >
             <OrderValueContext.Provider value={{ orderValue, setOrderValue }}>
               <BodyStroe
                 categoryData={categoryData}
@@ -287,7 +291,6 @@ export default function Store() {
                 {openDrawerRight.openBasketPopup && (
                   <BasketPopup
                     handleOpenBasket={handleOpenBasket}
-                    setingShopData={setingShopData}
                     sendCreateOrder={sendCreateOrder}
                     handleEditMenuPopup={handleEditMenuPopup}
                     handleMenuEdit={handleMenuEdit}

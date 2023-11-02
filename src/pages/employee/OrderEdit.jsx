@@ -132,36 +132,42 @@ function TabBody(params) {
     // { tabName: "ยกเลิก", tabStatus: "Cancel"},
     { tabName: "ภายหลัง", tabStatus: "Keep" },
   ];
+  const { notifications } = useContext(EmployeeContext);
   return (
     <>
       <ul className="w-full py-3 overflow-auto rounded-md menu flex-nowrap menu-horizontal bg-base-300 scrollerBar lg:justify-center">
         {tabsValue.map((e) => (
-          <li
-            className={`w-max h-max ${
-              e.tabStatus === "Keep" ? `pl-10 pr-1` : ` px-1`
-            }`}
-            key={e.tabName}
-            onClick={() => {
-              handleTabSelect(e.tabStatus);
-              // navigate(e.navigete);
-            }}
-          >
-            <a
-              className={`${
-                e.tabStatus === tabSelect
-                  ? `active`
-                  : e.tabStatus === "Keep"
-                  ? `bg-base-300`
-                  : `bg-base-200`
-              } px-4 min-w-[5rem] justify-center text-xl py-3`}
+          <div className="indicator" key={e.tabName}>
+            <IndicatorByStatus
+              tabStatus={e.tabStatus}
+              notifications={notifications}
+            />
+            <li
+              className={`w-max h-max ${
+                e.tabStatus === "Keep" ? `pl-10 pr-1` : ` px-1`
+              }`}
+              onClick={() => {
+                handleTabSelect(e.tabStatus);
+                // navigate(e.navigete);
+              }}
             >
-              {e.tabName}
-            </a>
-          </li>
+              <a
+                className={`${
+                  e.tabStatus === tabSelect
+                    ? `active`
+                    : e.tabStatus === "Keep"
+                    ? `bg-base-300`
+                    : `bg-base-200`
+                } px-4 min-w-[5rem] justify-center text-xl py-3`}
+              >
+                {e.tabName}
+              </a>
+            </li>
+          </div>
         ))}
       </ul>
 
-      <section className="h-full pb-0 overflow-x-auto scrollerBar rounded-b-md bg-base-100">
+      <section className="h-full pb-0 overflow-x-auto scrollerBar rounded-b-md">
         <ListOrder
           tabStatus={tabSelect}
           handleOpenOrderDetail={handleOpenOrderDetail}
@@ -171,6 +177,59 @@ function TabBody(params) {
       </section>
     </>
   );
+}
+
+function IndicatorByStatus(params) {
+  const { tabStatus, notifications } = params;
+
+  switch (tabStatus) {
+    case "Payment":
+      return (
+        <>
+          {notifications?.countOrderNotPayment &&
+            notifications?.countOrderNotPayment !== "0" && (
+              <span className="indicator-item indicator-center badge badge-primary">
+                {notifications?.countOrderNotPayment}
+              </span>
+            )}
+        </>
+      );
+    case "Making":
+      return (
+        <>
+          {notifications?.countOrderMaking &&
+            notifications?.countOrderMaking !== "0" && (
+              <span className="indicator-item indicator-center badge badge-info text-base-100">
+                {notifications?.countOrderMaking}
+              </span>
+            )}
+        </>
+      );
+    case "Receive":
+      return (
+        <>
+          {notifications?.countOrderReceive &&
+            notifications?.countOrderReceive !== "0" && (
+              <span className="indicator-item indicator-center badge btn-warning text-base-100 ">
+                {notifications?.countOrderReceive}
+              </span>
+            )}
+        </>
+      );
+    case "Keep":
+      return (
+        <>
+          {notifications?.countOrderKeep &&
+            notifications?.countOrderKeep !== "0" && (
+              <span className="indicator-item indicator-center badge badge-neutral text-base-100">
+                {notifications?.countOrderKeep}
+              </span>
+            )}
+        </>
+      );
+    default:
+      return <></>;
+  }
 }
 
 function ListOrder(params) {

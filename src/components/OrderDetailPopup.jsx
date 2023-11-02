@@ -46,7 +46,7 @@ export default function OrderDetailPopup(params) {
       </header>
 
       <main className="flex flex-col h-full overflow-y-scroll pb-[16rem] bg-base-300 pt-2 scrollerBar">
-        <div className="w-[97%] mb-4 ml-2 shadow-md card bg-base-100 text-base-content">
+        <div className="mx-2 mb-4 shadow-md card bg-base-100 text-base-content">
           <div className="card-body ">
             <p className="card-title">
               เลขออเดอร์: Od-{detailOrder?.orderNumber}
@@ -316,7 +316,7 @@ function ButtonTabKeep(params) {
   return (
     <>
       <button
-        className="btn btn-neutral"
+        className="btn btn-primary"
         onClick={() => {
           sendUpdateStatusOrder(orderId, "Payment");
         }}
@@ -411,7 +411,7 @@ function ButtonTabReceive(params) {
   return (
     <>
       <button
-        className="btn btn-success "
+        className="btn btn-success text-base-100"
         onClick={() => {
           sendUpdateStatusOrder(orderId, "Success");
         }}
@@ -507,7 +507,7 @@ function ButtonTabMaking(params) {
   return (
     <>
       <button
-        className="btn btn-info text-base-100"
+        className="btn btn-warning text-base-100 "
         onClick={() => {
           sendUpdateStatusOrder(orderId, "");
         }}
@@ -516,7 +516,7 @@ function ButtonTabMaking(params) {
       </button>
       <div className="flex justify-between">
         <button
-          className="w-[49%] btn btn-success"
+          className="w-[49%] btn btn-success text-base-100"
           onClick={() => {
             sendUpdateStatusOrder(orderId, "Success");
           }}
@@ -620,7 +620,7 @@ function ButtonTabPayment(params) {
   return (
     <>
       <button
-        className="btn btn-primary "
+        className="btn btn-info text-base-100"
         onClick={() => {
           sendUpdateStatusOrder(orderId, "");
         }}
@@ -629,7 +629,7 @@ function ButtonTabPayment(params) {
       </button>
       <div className="flex justify-between">
         <button
-          className="w-[49%] btn btn-success"
+          className="w-[49%] btn btn-success  text-base-100"
           onClick={() => {
             sendUpdateStatusOrder(orderId, "Success");
           }}
@@ -637,7 +637,7 @@ function ButtonTabPayment(params) {
           สำเร็จออเดอร์ทันที
         </button>
         <button
-          className="w-[49%] btn btn-neutral"
+          className="w-[49%] btn btn-neutral "
           onClick={() => {
             sendUpdateStatusOrder(orderId, "Keep");
           }}
