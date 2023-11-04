@@ -120,7 +120,7 @@ function TabBody(params) {
   const { openDrawerRight, handleOpenRecordDetail } = params;
 
   const currentTh = new Date(
-    new Date().toLocaleString("en-US", {
+    new Date().toLocaleDateString("en-US", {
       timeZone: "Asia/Bangkok",
     })
   );

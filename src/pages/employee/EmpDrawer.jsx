@@ -5,7 +5,6 @@ import { EmployeeContext } from "./EmployeeLayout";
 import { useNavigate } from "react-router-dom";
 import "boxicons";
 
-
 const categories = [
   {
     id: 100,
@@ -58,11 +57,10 @@ export default function EmpDrawer() {
   const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
-    const currentTh = new Date()
-      .toLocaleString({
-        timeZone: "Asia/Bangkok",
-      })
-      .split(" ")[1];
+    const currentTh = new Date().toLocaleTimeString("th-TH",{
+      timeZone: "Asia/Bangkok",
+    });
+
     setCurrentTime(currentTh);
   }, []);
 

@@ -135,11 +135,10 @@ export default function DialogConfirmCreateOrder(params) {
       // const month = (currentTh.getMonth() + 1).toString().padStart(2, "0");
       // const day = currentTh.getDate().toString().padStart(2, "0");
       // const date = `${year}-${month}-${day}`;
-      const currentTh1 = new Date()
-        .toLocaleString("en-US", {
-          timeZone: "Asia/Bangkok",
-        })
-        .split(",")[0];
+      const currentTh1 = new Date().toLocaleDateString("en-US", {
+        timeZone: "Asia/Bangkok",
+      });
+
       const toDateTh1 = currentTh1.split("/");
       const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0]}-${toDateTh1[1]}`;
 

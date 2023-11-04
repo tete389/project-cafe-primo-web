@@ -85,14 +85,14 @@ export default function Order() {
 }
 
 function TabBody(props) {
-  const { tabStatus, index } = props;
+  const { tabStatus } = props;
   const { notifications } = useContext(EmployeeContext);
 
   const currentTh1 = new Date()
-    .toLocaleString("en-US", {
+    .toLocaleDateString("en-US", {
       timeZone: "Asia/Bangkok",
     })
-    .split(",")[0];
+   
   const toDateTh1 = currentTh1.split("/");
   const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0]}-${toDateTh1[1]}`;
   // const dateSt = `2023-10-01`;

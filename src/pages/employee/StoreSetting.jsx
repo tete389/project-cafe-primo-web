@@ -101,15 +101,12 @@ function ManageShopStatus(params) {
   const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
-    const currentTh = new Date()
-      .toLocaleString({
-        timeZone: "Asia/Bangkok",
-      })
-      .split(" ")[1];
+    const currentTh = new Date().toLocaleTimeString("th-TH", {
+      timeZone: "Asia/Bangkok",
+    });
     setCurrentTime(currentTh);
   }, []);
 
-  
   const sendUpdateOpenDate = async (action, newOpen) => {
     let dataJson;
     if (action === "isOpenShop") {
@@ -167,7 +164,7 @@ function ManageShopStatus(params) {
     ////////// use
     await fetcherUpdateOpenDate();
   };
-  
+
   return (
     <>
       <>

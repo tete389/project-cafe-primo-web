@@ -156,19 +156,6 @@ export default function Store() {
     // const seconds = currentTh.getSeconds().toString();
     // const time = `${hours}:${minutes}:${seconds}`;
     setCurrentTime(currentTh);
-
-    const currentTh1 = new Date()
-      .toLocaleString("th-TH", {
-        timeZone: "Asia/Bangkok",
-      })
-      .split(",")[0];
-
-    console.log(currentTh1);
-    console.log(
-      new Date().toLocaleTimeString({
-        timeZone: "Asia/Bangkok",
-      })
-    );
     ///
     const followOrderStorage = localStorage.getItem("followOrder");
     if (followOrderStorage > 0 || followOrderStorage) {
@@ -182,11 +169,10 @@ export default function Store() {
       // const month = (currentDateTh.getMonth() + 1).toString().padStart(2, "0");
       // const day = currentDateTh.getDate().toString().padStart(2, "0");
       // const date = `${year}-${month}-${day}`;
-      const currentTh1 = new Date()
-        .toLocaleString("en-US", {
-          timeZone: "Asia/Bangkok",
-        })
-        .split(",")[0];
+      const currentTh1 = new Date().toLocaleDateString("en-US", {
+        timeZone: "Asia/Bangkok",
+      });
+
       const toDateTh1 = currentTh1.split("/");
       const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0]}-${toDateTh1[1]}`;
       // setDateOrder(date);

@@ -31,10 +31,9 @@ export default function OrderEdit() {
   const [tabSelect, setTabSelect] = useState("Payment");
 
   const currentTh = new Date()
-    .toLocaleString("en-US", {
+    .toLocaleDateString("en-US", {
       timeZone: "Asia/Bangkok",
     })
-    .split(",")[0];
   const toDateTh1 = currentTh.split("/");
   const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0]}-${toDateTh1[1]}`;
 

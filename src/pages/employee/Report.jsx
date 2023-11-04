@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/rules-of-hooks */
 import useSWR from "swr";
 import {
@@ -23,10 +24,9 @@ export default function Dashboard() {
   const dateStart = `2023-10-01`;
 
   const currentTh1 = new Date()
-    .toLocaleString("en-US", {
+    .toLocaleDateString("en-US", {
       timeZone: "Asia/Bangkok",
     })
-    .split(",")[0];
   const toDateTh1 = currentTh1.split("/");
   const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0]}-${toDateTh1[1]}`;
 
@@ -36,6 +36,7 @@ export default function Dashboard() {
     30,
     0
   );
+ 
   const { recentDetailOrder, recentProductLoading, recentProductError } =
     getRecentDetailOrder(dateTh1, dateTh1, 30, 0);
 
@@ -126,8 +127,7 @@ export default function Dashboard() {
                 <div className="stat-figure"></div>
                 <div className="stat-title">รายได้สัปดาห์นี้</div>
                 <div className="stat-value">
-                  {/* {recentOrder?.incomeOfWeek ? recentOrder?.incomeOfWeek : 0}{" "} */}
-                  160
+                  {recentOrder?.incomeOfWeek ? recentOrder?.incomeOfWeek : 0}{" "}
                 </div>
                 <div className="stat-desc">บาท</div>
               </div>
