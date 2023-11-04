@@ -109,6 +109,7 @@ function ManageShopStatus(params) {
     setCurrentTime(currentTh);
   }, []);
 
+  
   const sendUpdateOpenDate = async (action, newOpen) => {
     let dataJson;
     if (action === "isOpenShop") {
@@ -166,7 +167,7 @@ function ManageShopStatus(params) {
     ////////// use
     await fetcherUpdateOpenDate();
   };
-
+  
   return (
     <>
       <>

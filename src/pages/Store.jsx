@@ -147,16 +147,28 @@ export default function Store() {
     if (storedLanguage) {
       setUserLanguage(storedLanguage);
     }
-    const currentTh = new Date()
-      .toLocaleString({
-        timeZone: "Asia/Bangkok",
-      })
-      .split(" ")[1];
+    const currentTh = new Date().toLocaleTimeString("th-TH", {
+      timeZone: "Asia/Bangkok",
+    });
+
     // const hours = currentTh.getHours().toString();
     // const minutes = currentTh.getMinutes().toString();
     // const seconds = currentTh.getSeconds().toString();
     // const time = `${hours}:${minutes}:${seconds}`;
     setCurrentTime(currentTh);
+
+    const currentTh1 = new Date()
+      .toLocaleString("th-TH", {
+        timeZone: "Asia/Bangkok",
+      })
+      .split(",")[0];
+
+    console.log(currentTh1);
+    console.log(
+      new Date().toLocaleTimeString({
+        timeZone: "Asia/Bangkok",
+      })
+    );
     ///
     const followOrderStorage = localStorage.getItem("followOrder");
     if (followOrderStorage > 0 || followOrderStorage) {
@@ -499,7 +511,7 @@ function BodyStroe(params) {
         <div className="container h-screen mx-auto overflow-hidden ">
           <div className="scrollerBar grid content-start h-full grid-cols-2 gap-3 overflow-auto sm:gap-5 md:gap-8 md:grid-cols-3 lg:grid-cols-4 xl:mx-24 standard:mx-1 pt-32 md:pt-36 pb-[11rem]">
             {categoryData ? (
-              filterSelectCategory.productBasePrice?.map((prod) => (
+              filterSelectCategory?.productBasePrice?.map((prod) => (
                 <div
                   key={prod.prodBaseId}
                   className={`w-full h-48 overflow-hidden md:h-56 card bg-base-content  ${
