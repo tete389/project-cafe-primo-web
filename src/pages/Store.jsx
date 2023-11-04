@@ -481,7 +481,9 @@ function BodyStroe(params) {
             categoryData?.map((cate, index) => (
               <li
                 key={cate.cateId}
-                className="p-1 text-xl font-bold "
+                className={`p-1 text-xl font-bold ${
+                  !cate.isEnable && `hidden`
+                }`}
                 onClick={() => handleChangeTabs(index)}
               >
                 <a

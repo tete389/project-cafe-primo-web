@@ -193,7 +193,7 @@ export default function PopupSelectMenu(props) {
                   }}
                   className="px-1 "
                 >
-                  {e.isEnable ? (
+                  {e.isEnable && e.isMaterialEnable ? (
                     <a
                       className={` text-xl font-semibold text-base-content  ${
                         tabsForm === e.prodFormId ? `active` : `bg-base-100`
@@ -361,7 +361,6 @@ function AddOnBox(props) {
   useEffect(() => {
     setTabsOption([]);
   }, [tabsForm]);
-
 
   return (
     <>
