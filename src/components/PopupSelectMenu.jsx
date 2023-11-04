@@ -362,7 +362,6 @@ function AddOnBox(props) {
     setTabsOption([]);
   }, [tabsForm]);
 
-  // console.log(1 ===tabsOption.select[0]);
 
   return (
     <>

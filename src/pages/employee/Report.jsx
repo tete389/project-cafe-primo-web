@@ -99,8 +99,6 @@ export default function Dashboard() {
     return result;
   };
 
-  console.log(recentOrder);
-
   const resultOrderToDay = recentOrder?.listOrder?.map((ord) => ord.status);
   const resultStatusToday = [...new Set(resultOrderToDay)]?.map((f) => {
     let count = 0;

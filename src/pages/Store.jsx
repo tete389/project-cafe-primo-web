@@ -248,7 +248,7 @@ export default function Store() {
     );
   }
 
-  console.log(currentTime);
+
   return (
     <LanguageContext.Provider value={userLanguage}>
       <ToastContext.Provider

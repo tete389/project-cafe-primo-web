@@ -24,8 +24,6 @@ function PageRoute() {
     setLoggedIn(false)
   }
 
-  console.log(loggedIn);
-
   return (
     <>
       

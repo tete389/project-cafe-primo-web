@@ -299,33 +299,6 @@ function AddOnBox(props) {
   });
 
   const selectOpt = addOn.options || [];
-  // selectOpt.map((e) => {
-  //   delete e.isEnable, delete e.isMaterialEnable;
-  // });
-
-  // const resetSelectRadio = () => {
-  //   setSelectRadio("");
-  //   selectOpt.forEach((e) => (e.select = false));
-  //   handleSelectMenuOpt((prev) => [...prev]);
-  //   console.log(selectOpt);
-  // };
-
-  // const handleCheckedRadio = (event) => {
-  //   setSelectRadio(event.target.value);
-  //   selectOpt.forEach((e) => {
-  //     if (e.optionId === event.target.value) {
-  //       e.select = true;
-  //       e.addOn = addOn.addOnTitle;
-  //       if (!selectMenuOpt.find((sm) => sm.optionId === event.target.value)) {
-  //         handleSelectMenuOpt((prev) => [...prev, e]);
-  //       } else {
-  //         handleSelectMenuOpt((prev) => [...prev]);
-  //       }
-  //     } else {
-  //       e.select = false;
-  //     }
-  //   });
-  // };
 
   const handleOnlyCheckedBox = (event) => {
     selectOpt.forEach((e) => {

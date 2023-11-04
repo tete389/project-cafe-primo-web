@@ -12,8 +12,6 @@ export default function FollowOrderPopup(params) {
   const { handleOpenFollowOrder, followOrder, setfollowOrder } = params;
 
   const userLanguage = useContext(LanguageContext);
-  // const [followOrder, setfollowOrder] = useState([]);
-  // const [dateOrder, setDateOrder] = useState();
 
   const [orderSelect, setOrderSelect] = useState({});
   const handleOrderSelect = (newSelect) => {
@@ -145,8 +143,6 @@ function FollowOrderDetail(params) {
     return orderTime;
   };
 
-  // const originalString = detailOrder.orderDate;
-  // const orderDateTime = originalString?.split(" ");
   return (
     <>
       {detailOrder ? (
@@ -275,15 +271,11 @@ function FollowOrderDetail(params) {
 function ButtonTabTakePoints(params) {
   const { orderId, orderDetailPoint, orderUrl, orderPrice } = params;
 
-  // mutate(orderUrl)
-
   const filterTakePoint = orderDetailPoint?.some(
     (e) => e.action === "Collect Points"
   );
 
   const [openCollect, setOpenCollect] = useState(false);
-
-  // console.log(setingShopData);
 
   const handleOpenCollect = () => {
     setOpenCollect(true);
@@ -291,7 +283,6 @@ function ButtonTabTakePoints(params) {
   };
 
   const handleCloseCollect = () => {
-    // window.my_modal_CollectPoint.close();
     setOpenCollect(false);
   };
 

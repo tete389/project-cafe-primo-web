@@ -21,7 +21,7 @@ const initialState = {
 
       onClickSelect: (state , action) => {
         state.basket.push(action.payload);
-        console.log(state.basket);
+        
       },
     },
   })
