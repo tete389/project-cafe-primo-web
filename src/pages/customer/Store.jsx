@@ -3,9 +3,9 @@ import { Fab, SwipeableDrawer } from "@mui/material";
 import PropTypes from "prop-types";
 import { createContext, useContext, useEffect, useState } from "react";
 import useSWR from "swr";
-import "../style/store.css";
+import "../../style/store.css";
 
-import BasketPopup from "../components/BasketPopup";
+import BasketPopup from "../../components/BasketPopup";
 
 import axios from "axios";
 import {
@@ -16,16 +16,16 @@ import {
   haveMinPriceIc,
   pageNum,
   pageSize,
-} from "../service/BaseURL";
+} from "../../service/BaseURL";
 import "boxicons";
-import PopupSelectMenu from "../components/PopupSelectMenu";
-import DialogConfirmCreateOrder from "../components/DialogConfirmCreateOrder";
-import FollowOrderPopup from "../components/FollowOrderPopup";
-import PopupEditMenu from "../components/PopupEditMenu";
-import ToastAlertLoading from "../components/ToastAlertLoading";
-import ToastAlertError from "../components/ToastAlertError";
-import ResLoadingScreen from "../components/ResLoadingScreen";
-import ResErrorScreen from "../components/ResErrorScreen";
+import PopupSelectMenu from "../../components/PopupSelectMenu";
+import DialogConfirmCreateOrder from "../../components/DialogConfirmCreateOrder";
+import FollowOrderPopup from "../../components/FollowOrderPopup";
+import PopupEditMenu from "../../components/PopupEditMenu";
+import ToastAlertLoading from "../../components/ToastAlertLoading";
+import ToastAlertError from "../../components/ToastAlertError";
+import ResLoadingScreen from "../../components/ResLoadingScreen";
+import ResErrorScreen from "../../components/ResErrorScreen";
 
 // export const BasketCareteValueContext = createContext();
 export const BasketValueContext = createContext();

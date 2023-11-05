@@ -10,7 +10,7 @@ import {
   BasketValueContext,
   LanguageContext,
   OrderValueContext,
-} from "../pages/Store";
+} from "../pages/customer/Store";
 
 export default function BasketPopup(props) {
   const {
@@ -20,7 +20,8 @@ export default function BasketPopup(props) {
     handleMenuEdit,
   } = props;
 
-  const { basketValue, setBasketValue, setingShopData } = useContext(BasketValueContext);
+  const { basketValue, setBasketValue, setingShopData } =
+    useContext(BasketValueContext);
   const { orderValue, setOrderValue } = useContext(OrderValueContext);
   const userLanguage = useContext(LanguageContext);
 

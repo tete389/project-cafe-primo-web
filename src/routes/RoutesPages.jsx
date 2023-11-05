@@ -4,8 +4,8 @@ import Home from "../pages/Home";
 import Error from "../pages/Error";
 import EmployeeLayout from "../pages/employee/EmployeeLayout";
 import Report from "../pages/employee/Report";
-import Product from "../pages/Product";
-import Order from "../pages/Order";
+import Product from "../pages/employee/Product";
+
 import EmpLogin from "../pages/employee/EmpLogin";
 
 ///
@@ -13,14 +13,14 @@ import EmpLogin from "../pages/employee/EmpLogin";
 import ProtectRoute from "./ProtectRoute";
 
 /////
-import Store from "../pages/Store";
+import Store from "../pages/customer/Store";
 import MenuProduct from "../pages/employee/MenuProduct";
 import MenuCategory from "../pages/employee/MenuCategory";
 import MenuMaterial from "../pages/employee/MenuMaterial";
 import MenuAddOn from "../pages/employee/MenuAddOn";
 import StoreSetting from "../pages/employee/StoreSetting";
 import Record from "../pages/employee/Record";
-import OrderEdit from "../pages/employee/OrderEdit";
+import Order from "../pages/employee/Order";
 
 const router = createBrowserRouter([
   {
@@ -66,10 +66,10 @@ const router = createBrowserRouter([
                 element: <Order />,
               },
 
-              {
-                path: "orderEdit",
-                element: <OrderEdit />,
-              },
+              // {
+              //   path: "orderEdit",
+              //   element: <OrderEdit />,
+              // },
               {
                 path: "record",
                 element: <Record />,

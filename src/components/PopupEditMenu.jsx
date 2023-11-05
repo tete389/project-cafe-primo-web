@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useContext, useEffect, useState } from "react";
-import { BasketValueContext, LanguageContext } from "../pages/Store";
+
 import axios from "axios";
 import useSWR from "swr";
 import {
@@ -10,6 +10,7 @@ import {
   haveAddOn,
   haveOption,
 } from "../service/BaseURL";
+import { BasketValueContext, LanguageContext } from "../pages/customer/Store";
 
 export default function PopupEditMenu(props) {
   const { menuEdit, handleEditMenuPopup } = props;
@@ -17,7 +18,7 @@ export default function PopupEditMenu(props) {
   const userLanguage = useContext(LanguageContext);
   const { basketValue, setBasketValue } = useContext(BasketValueContext);
 
-  const filterEditProduct = basketValue?.menu?.find((e, index) => {
+  const filterEditProduct = basketValue?.menu?.find((e) => {
     return e.itemId === menuEdit;
     // return index === menuEdit;
   });

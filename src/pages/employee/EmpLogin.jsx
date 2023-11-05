@@ -90,13 +90,13 @@ export default function EmpLogin() {
   let timeToOut;
   const handleOnClose = () => {
     timeToOut = setTimeout(() => {
-      navigate("/report");
+      navigate("/order");
     }, 1000);
   };
 
   useEffect(() => {
     return () => clearTimeout(timeToOut);
-  }, []);
+  }, [timeToOut]);
 
   return (
     <>

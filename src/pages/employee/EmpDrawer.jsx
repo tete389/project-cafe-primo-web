@@ -14,7 +14,7 @@ const categories = [
         id: 101,
         subTitle: "คำสั่งซื้อ",
         icon: <box-icon name="basket" color="#272727"></box-icon>,
-        navigete: "/orderEdit",
+        navigete: "/order",
       },
       {
         id: 102,

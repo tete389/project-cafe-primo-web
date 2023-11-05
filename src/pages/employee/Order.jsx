@@ -27,13 +27,12 @@ import {
 import OrderDetailPopup from "../../components/OrderDetailPopup";
 import DrawerRightW24Rem from "../../components/DrawerRightW24Rem";
 
-export default function OrderEdit() {
+export default function Order() {
   const [tabSelect, setTabSelect] = useState("Payment");
 
-  const currentTh = new Date()
-    .toLocaleDateString("en-US", {
-      timeZone: "Asia/Bangkok",
-    })
+  const currentTh = new Date().toLocaleDateString("en-US", {
+    timeZone: "Asia/Bangkok",
+  });
   const toDateTh1 = currentTh.split("/");
   const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0]}-${toDateTh1[1]}`;
 
@@ -307,6 +306,7 @@ function ListOrder(params) {
                     ? ""
                     : "ชื่อลูกค้า: " + e.customerName}
                 </span>
+
                 <div className="flex flex-col gap-1 ">
                   <span>฿ {e.orderPrice}</span>
                   <span className="text-base">{dateTime(e.orderDate)}</span>

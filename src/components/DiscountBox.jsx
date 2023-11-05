@@ -2,7 +2,8 @@
 import { useContext, useState } from "react";
 import { BaseURL, findPoint } from "../service/BaseURL";
 import axios from "axios";
-import { LanguageContext } from "../pages/Store";
+import { LanguageContext } from "../pages/customer/Store";
+
 
 export default function DiscountBox(props) {
   const { setingShopData, handleCreateDiscount, setOpenBox } = props;

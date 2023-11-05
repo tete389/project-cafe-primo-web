@@ -10,8 +10,8 @@ import {
   haveOption,
 } from "../service/BaseURL";
 import useSWR from "swr";
-import { BasketValueContext, LanguageContext } from "../pages/Store";
 import ResErrorScreen from "./ResErrorScreen";
+import { BasketValueContext, LanguageContext } from "../pages/customer/Store";
 
 export default function PopupSelectMenu(props) {
   const { filterSelectProduct, handleSelectMenuPopup } = props;

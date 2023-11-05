@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useContext, useState } from "react";
-import { LanguageContext } from "../pages/Store";
+
 import { BaseURL, findOrderById, haveOrderDetail } from "../service/BaseURL";
 import useSWR from "swr";
 import axios from "axios";
 import ResLoadingScreen from "./ResLoadingScreen";
 import ResErrorScreen from "./ResErrorScreen";
 import DialogCollectPoint from "./DialogCollectPoint";
+import { LanguageContext } from "../pages/customer/Store";
 
 export default function FollowOrderPopup(params) {
   const { handleOpenFollowOrder, followOrder, setfollowOrder } = params;
@@ -59,7 +60,7 @@ export default function FollowOrderPopup(params) {
         {followOrder?.map((e, index) => (
           <div
             key={index}
-            className="mx-2 mb-3 shadow-md  card bg-base-100 text-base-content"
+            className="mx-2 mb-3 shadow-md card bg-base-100 text-base-content"
           >
             <button
               className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"

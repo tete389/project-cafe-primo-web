@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
-import { LanguageContext, OrderValueContext } from "../pages/Store";
+import { LanguageContext, OrderValueContext } from "../pages/customer/Store";
+
 
 export default function NoteBox(props) {
   const {  setOpenBox } = props;

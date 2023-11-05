@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 
-import { Navigate, useNavigate, Outlet } from "react-router-dom";
-import { EmployeeContext } from "./employee/EmployeeLayout";
+import { useNavigate, Outlet } from "react-router-dom";
+import { EmployeeContext } from "./EmployeeLayout";
 import { useEffect } from "react";
 
 export default function Product() {
