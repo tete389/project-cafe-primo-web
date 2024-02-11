@@ -102,7 +102,7 @@ export default function DiscountBox(props) {
 
     fetcher();
   };
-
+console.log(setingShopData?.pointSpendRate);
   return (
     <>
       <div className=" form-control">
@@ -149,7 +149,8 @@ export default function DiscountBox(props) {
         {dataState.isError && (
           <div className="flex justify-center my-3">
             <p className="text-red-500 ">
-              ไม่พบข้อมูล กรุณาตรวจสอบหมายเลขอีกครั้ง
+              
+              {userLanguage === "th" ? "ไม่พบข้อมูล กรุณาตรวจสอบหมายเลขอีกครั้ง" : "No information found, Please check phone number again"}
             </p>
           </div>
         )}
@@ -162,7 +163,7 @@ export default function DiscountBox(props) {
             <div className="grid grid-cols-3 join">
               <button
                 className=" join-item btn btn-ghost btn-active btn-sm rounded-l-3xl"
-                onClick={() => fixUsePoint(-100, usePoint)}
+                onClick={() => fixUsePoint(-(setingShopData?.pointSpendRate), usePoint)}
               >
                 -
               </button>
@@ -174,7 +175,7 @@ export default function DiscountBox(props) {
               </button>
               <button
                 className=" join-item btn btn-ghost btn-active btn-sm rounded-r-3xl"
-                onClick={() => fixUsePoint(100, usePoint)}
+                onClick={() => fixUsePoint(setingShopData?.pointSpendRate, usePoint)}
               >
                 +
               </button>

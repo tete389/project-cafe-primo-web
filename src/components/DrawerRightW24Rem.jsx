@@ -12,7 +12,7 @@ export default function DrawerRightW24Rem(params) {
       sx={{
         flexShrink: 0,
         zIndex: "100",
-        display: { xs: "none", sm: "none", md: "block" },
+        display: { xs: "none", sm: "block"},
         "& .MuiDrawer-paper": {
           boxSizing: "border-box",
           overflow: "hidden",

@@ -29,6 +29,39 @@ export default function StoreSetting() {
     });
   };
 
+  // function sumTime(time1, time2) {
+  //   const [hours1, minutes1] = time1.split(":").map(Number);
+  //   const [hours2, minutes2] = time2.split(":").map(Number);
+  //   let totalHours = hours1 + hours2;
+  //   let totalMinutes = minutes1 + minutes2;
+  //   if (totalMinutes >= 60) {
+  //     totalHours += Math.floor(totalMinutes / 60);
+  //     totalMinutes %= 60;
+  //   }
+  //   const formattedHours = padZero(totalHours);
+  //   const formattedMinutes = padZero(totalMinutes);
+  //   return `${formattedHours}:${formattedMinutes}`;
+  // }
+  // function padZero(value) {
+  //   return value < 10 ? `0${value}` : `${value}`;
+  // }
+
+  // const startTime = new Date("2023-11-16T12:30:00");
+  // const endTime = new Date("2023-11-16T18:35:00");
+
+  // // Calculate the time difference in milliseconds
+  // const timeDifference = endTime.getTime() - startTime.getTime();
+
+  // // Convert the time difference from milliseconds to hours and minutes
+  // const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+  // const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+
+  // console.log(
+  //   "Time Difference: " + hours + " hours and " + minutes + " minutes"
+  // );
+
+  // console.log(sumTime(hours + ":" + minutes, "0:00"));
+
   return (
     <main className="px-2 pt-16 overflow-hidden">
       <div className="container h-screen mx-auto overflow-hidden pb-[120px] sm:max-w-lg">
