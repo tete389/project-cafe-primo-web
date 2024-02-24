@@ -232,16 +232,14 @@ export default function PopupSelectMenu(props) {
                 {filterSelectForm?.addOnOption.length > 0 &&
                 filterSelectForm?.isEnable &&
                 filterSelectForm?.isMaterialEnable ? (
-                  filterSelectForm?.addOnOption?.map((e) => {
-                    if (!e.isEnable) {
-                      <AddOnBox
-                        key={e.addOnId}
-                        addOn={e}
-                        setOptionSelect={setOptionSelect}
-                        tabsForm={tabsForm}
-                      />;
-                    }
-                  })
+                  filterSelectForm?.addOnOption?.map((e) => (
+                    <AddOnBox
+                      key={e.addOnId}
+                      addOn={e}
+                      setOptionSelect={setOptionSelect}
+                      tabsForm={tabsForm}
+                    />
+                  ))
                 ) : (
                   <div className="flex items-center justify-center h-full">
                     <p className="text-2xl font-semibold">
