@@ -36,7 +36,7 @@ export default function Dashboard() {
     30,
     0
   );
- 
+
   const { recentDetailOrder, recentProductLoading, recentProductError } =
     getRecentDetailOrder(dateTh1, dateTh1, 30, 0);
 
@@ -141,9 +141,7 @@ export default function Dashboard() {
             <div className=" w-full lg:w-[79.5%] p-1 rounded-b-lg lg:rounded-lg h-max bg-base-100 lg:mb-0">
               {recentDetailOrder && (
                 <RecentOrderIncomeChart
-                  recentOrder={recentOrder?.listOrder}
-                  // dateCurrent={dateCurrent}
-                  incomeOfMonth={recentOrder?.incomeOfMonth ? recentOrder?.incomeOfMonth : 0}
+                  incomeToChart={(recentOrder?.incomeToChart && recentOrder?.incomeToChart.length > 0) ? recentOrder?.incomeOfMonth : []}
                   year={toDateTh1[2]}
                   month={toDateTh1[0]}
                 />
@@ -396,24 +394,7 @@ function ByCassStatus(params) {
 }
 
 function RecentOrderIncomeChart(params) {
-  const { recentOrder, dateCurrent,incomeOfMonth,  year , month } = params;
-
-  // const resultOrderToDay = recentOrder?.map((ord) => ord.status);
-  // const resultStatusToday = [...new Set(resultOrderToDay)]?.map((f) => {
-  //   let count = 0;
-  //   resultOrderToDay.filter((m) => {
-  //     if (f === m) {
-  //       count = count + 1;
-  //     }
-  //   });
-  //   return { status: f, quantity: count };
-  // });
-
-  // const resultStatusHigh = resultStatusToday?.sort(
-  //   (a, b) => b.quantity - a.quantity
-  // );
-
-
+  const { incomeToChart, year, month } = params;
   const labels = [
     "January",
     "February",
@@ -430,7 +411,12 @@ function RecentOrderIncomeChart(params) {
   ];
   const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-  data[month - 1] = incomeOfMonth
+  if (incomeToChart.length > 0) {
+    for(const incomeChart of incomeToChart){
+      data[(Number(incomeChart[0]) - 1)] =  incomeChart[1]
+    }
+  }
+  // data[month - 1] = incomeOfMonth
   const resultRandomColor = labels?.map(() => {
     return randomColor({ luminosity: "light" });
   });
