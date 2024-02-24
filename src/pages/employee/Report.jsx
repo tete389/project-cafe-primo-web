@@ -428,7 +428,7 @@ function RecentOrderIncomeChart(params) {
     "November",
     "December",
   ];
-  const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 3234, 0, 0];
+  const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   data[month - 1] = incomeOfMonth
   const resultRandomColor = labels?.map(() => {
