@@ -413,7 +413,10 @@ function RecentOrderIncomeChart(params) {
 
   if (incomeToChart.length > 0) {
     for(const incomeChart of incomeToChart){
-      data[(Number(incomeChart[0]) - 1)] =  incomeChart[1]
+      data[(Number(incomeChart[0] - 0) - 1)] =  incomeChart[1]
+      console.log(incomeChart);
+      console.log(Number(incomeChart[0] - 0) - 1);
+      console.log(incomeChart[1]);
     }
   }
   // data[month - 1] = incomeOfMonth
