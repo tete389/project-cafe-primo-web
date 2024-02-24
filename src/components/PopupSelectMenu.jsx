@@ -240,8 +240,6 @@ export default function PopupSelectMenu(props) {
                         setOptionSelect={setOptionSelect}
                         tabsForm={tabsForm}
                       />;
-                    } else {
-                      <></>;
                     }
                   })
                 ) : (
