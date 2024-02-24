@@ -36,7 +36,7 @@ export default function Dashboard() {
     30,
     0
   );
- 
+
   const { recentDetailOrder, recentProductLoading, recentProductError } =
     getRecentDetailOrder(dateTh1, dateTh1, 30, 0);
 
@@ -141,8 +141,9 @@ export default function Dashboard() {
             <div className=" w-full lg:w-[79.5%] p-1 rounded-b-lg lg:rounded-lg h-max bg-base-100 lg:mb-0">
               {recentDetailOrder && (
                 <RecentOrderIncomeChart
-                  recentOrder={recentOrder?.listOrder}
-                  // dateCurrent={dateCurrent}
+                  incomeToChart={(recentOrder?.incomeToChart && recentOrder?.incomeToChart.length > 0) ? recentOrder?.incomeToChart : []}
+                  year={toDateTh1[2]}
+                  month={toDateTh1[0]}
                 />
               )}
             </div>
@@ -393,22 +394,7 @@ function ByCassStatus(params) {
 }
 
 function RecentOrderIncomeChart(params) {
-  const { recentOrder, dateCurrent } = params;
-
-  // const resultOrderToDay = recentOrder?.map((ord) => ord.status);
-  // const resultStatusToday = [...new Set(resultOrderToDay)]?.map((f) => {
-  //   let count = 0;
-  //   resultOrderToDay.filter((m) => {
-  //     if (f === m) {
-  //       count = count + 1;
-  //     }
-  //   });
-  //   return { status: f, quantity: count };
-  // });
-
-  // const resultStatusHigh = resultStatusToday?.sort(
-  //   (a, b) => b.quantity - a.quantity
-  // );
+  const { incomeToChart, year, month } = params;
   const labels = [
     "January",
     "February",
@@ -423,7 +409,17 @@ function RecentOrderIncomeChart(params) {
     "November",
     "December",
   ];
-  const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 3234, 0, 0];
+  const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+  if (incomeToChart.length > 0) {
+    for(const incomeChart of incomeToChart){
+      data[(Number(incomeChart[0] - 0) - 1)] =  incomeChart[1]
+      console.log(incomeChart);
+      console.log(Number(incomeChart[0] - 0) - 1);
+      console.log(incomeChart[1]);
+    }
+  }
+  // data[month - 1] = incomeOfMonth
   const resultRandomColor = labels?.map(() => {
     return randomColor({ luminosity: "light" });
   });
@@ -446,7 +442,7 @@ function RecentOrderIncomeChart(params) {
       },
       title: {
         display: true,
-        text: `รายได้ต่อเดือน 2023`,
+        text: `รายได้ต่อเดือน ${year}`,
       },
     },
   };
