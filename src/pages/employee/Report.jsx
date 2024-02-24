@@ -143,6 +143,9 @@ export default function Dashboard() {
                 <RecentOrderIncomeChart
                   recentOrder={recentOrder?.listOrder}
                   // dateCurrent={dateCurrent}
+                  incomeOfMonth={recentOrder?.incomeOfMonth ? recentOrder?.incomeOfMonth : 0}
+                  year={toDateTh1[2]}
+                  month={toDateTh1[0]}
                 />
               )}
             </div>
@@ -393,7 +396,7 @@ function ByCassStatus(params) {
 }
 
 function RecentOrderIncomeChart(params) {
-  const { recentOrder, dateCurrent } = params;
+  const { recentOrder, dateCurrent,incomeOfMonth,  year , month } = params;
 
   // const resultOrderToDay = recentOrder?.map((ord) => ord.status);
   // const resultStatusToday = [...new Set(resultOrderToDay)]?.map((f) => {
@@ -409,6 +412,8 @@ function RecentOrderIncomeChart(params) {
   // const resultStatusHigh = resultStatusToday?.sort(
   //   (a, b) => b.quantity - a.quantity
   // );
+
+
   const labels = [
     "January",
     "February",
@@ -424,6 +429,8 @@ function RecentOrderIncomeChart(params) {
     "December",
   ];
   const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 3234, 0, 0];
+
+  data[month - 1] = incomeOfMonth
   const resultRandomColor = labels?.map(() => {
     return randomColor({ luminosity: "light" });
   });
@@ -446,7 +453,7 @@ function RecentOrderIncomeChart(params) {
       },
       title: {
         display: true,
-        text: `รายได้ต่อเดือน 2023`,
+        text: `รายได้ต่อเดือน ${year}`,
       },
     },
   };
