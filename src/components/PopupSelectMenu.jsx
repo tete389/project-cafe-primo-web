@@ -233,7 +233,7 @@ export default function PopupSelectMenu(props) {
                 filterSelectForm?.isEnable &&
                 filterSelectForm?.isMaterialEnable ? (
                   filterSelectForm?.addOnOption?.map((e) => {
-                    if (e.isEnable) {
+                    if (!e.isEnable) {
                       <AddOnBox
                         key={e.addOnId}
                         addOn={e}
