@@ -141,7 +141,7 @@ export default function Dashboard() {
             <div className=" w-full lg:w-[79.5%] p-1 rounded-b-lg lg:rounded-lg h-max bg-base-100 lg:mb-0">
               {recentDetailOrder && (
                 <RecentOrderIncomeChart
-                  incomeToChart={(recentOrder?.incomeToChart && recentOrder?.incomeToChart.length > 0) ? recentOrder?.incomeOfMonth : []}
+                  incomeToChart={(recentOrder?.incomeToChart && recentOrder?.incomeToChart.length > 0) ? recentOrder?.incomeToChart : []}
                   year={toDateTh1[2]}
                   month={toDateTh1[0]}
                 />
