@@ -232,14 +232,18 @@ export default function PopupSelectMenu(props) {
                 {filterSelectForm?.addOnOption.length > 0 &&
                 filterSelectForm?.isEnable &&
                 filterSelectForm?.isMaterialEnable ? (
-                  filterSelectForm?.addOnOption?.map((e) => (
-                    <AddOnBox
-                      key={e.addOnId}
-                      addOn={e}
-                      setOptionSelect={setOptionSelect}
-                      tabsForm={tabsForm}
-                    />
-                  ))
+                  filterSelectForm?.addOnOption?.map((e) =>
+                    e.isEnable ? (
+                      <AddOnBox
+                        key={e.addOnId}
+                        addOn={e}
+                        setOptionSelect={setOptionSelect}
+                        tabsForm={tabsForm}
+                      />
+                    ) : (
+                      <></>
+                    )
+                  )
                 ) : (
                   <div className="flex items-center justify-center h-full">
                     <p className="text-2xl font-semibold">
@@ -364,11 +368,10 @@ function AddOnBox(props) {
 
   return (
     <>
-      {addOn.isEnable ? (
-        <div className="m-2 card bg-base-100">
-          <div className="card-body">
-            <div className="text-base-content card-title">
-              {/* <div className="absolute dropdown dropdown-end right-2 top-2">
+      <div className="m-2 card bg-base-100">
+        <div className="card-body">
+          <div className="text-base-content card-title">
+            {/* <div className="absolute dropdown dropdown-end right-2 top-2">
             <div
               htmlFor="0"
               tabIndex={0}
@@ -398,12 +401,12 @@ function AddOnBox(props) {
             </div>
           </div> */}
 
-              <p className="text-2xl font-semibold">
-                {userLanguage === "th"
-                  ? addOn?.addOnTitleTh
-                  : addOn?.addOnTitleEng}
+            <p className="text-2xl font-semibold">
+              {userLanguage === "th"
+                ? addOn?.addOnTitleTh
+                : addOn?.addOnTitleEng}
 
-                {/* <button
+              {/* <button
               className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
               // onClick={() => deleteOrder(bv.itemId)}
             >
@@ -413,87 +416,84 @@ function AddOnBox(props) {
               ></box-icon>
             </button> */}
 
-                {addOn?.isManyOptions ? (
-                  <span className="pl-5 text-base opacity-70">
-                    {userLanguage === "th"
-                      ? "เลือกได้หลายตัวเลือก"
-                      : "choose several options"}
-                  </span>
-                ) : (
-                  <span className="pl-5 text-base opacity-70">
-                    {userLanguage === "th"
-                      ? " เลือกได้ 1 ตัวเลือก"
-                      : "choose one option"}
-                  </span>
-                )}
-              </p>
-            </div>
-            <div className=" card-actions">
-              {addOn?.isManyOptions
-                ? addOn.options?.map((option, index) => (
-                    <div key={index} className="w-full form-control">
-                      <label className="cursor-pointer label text-base-content">
-                        <span className="flex justify-between ">
-                          <input
-                            name={option.optionNameEng}
-                            type="checkbox"
-                            // defaultChecked={false}
-                            checked={tabsOption?.some(
-                              (e) => e === option.optionId
-                            )}
-                            className="checkbox checkbox-lg checkbox-primary"
-                            onChange={() =>
-                              handleChangeTabsManyOption(option.optionId)
-                            }
-                            disabled={!option.isEnable}
-                          />
-                          <span className="ml-5 text-lg opacity-80 label-text">
-                            {userLanguage === "th"
-                              ? option.optionNameTh
-                              : option.optionNameEng}
-                          </span>
+              {addOn?.isManyOptions ? (
+                <span className="pl-5 text-base opacity-70">
+                  {userLanguage === "th"
+                    ? "เลือกได้หลายตัวเลือก"
+                    : "choose several options"}
+                </span>
+              ) : (
+                <span className="pl-5 text-base opacity-70">
+                  {userLanguage === "th"
+                    ? " เลือกได้ 1 ตัวเลือก"
+                    : "choose one option"}
+                </span>
+              )}
+            </p>
+          </div>
+          <div className=" card-actions">
+            {addOn?.isManyOptions
+              ? addOn.options?.map((option, index) => (
+                  <div key={index} className="w-full form-control">
+                    <label className="cursor-pointer label text-base-content">
+                      <span className="flex justify-between ">
+                        <input
+                          name={option.optionNameEng}
+                          type="checkbox"
+                          // defaultChecked={false}
+                          checked={tabsOption?.some(
+                            (e) => e === option.optionId
+                          )}
+                          className="checkbox checkbox-lg checkbox-primary"
+                          onChange={() =>
+                            handleChangeTabsManyOption(option.optionId)
+                          }
+                          disabled={!option.isEnable}
+                        />
+                        <span className="ml-5 text-lg opacity-80 label-text">
+                          {userLanguage === "th"
+                            ? option.optionNameTh
+                            : option.optionNameEng}
                         </span>
-                        <span className="text-lg label-text">
-                          + {option.price}
+                      </span>
+                      <span className="text-lg label-text">
+                        + {option.price}
+                      </span>
+                    </label>
+                  </div>
+                ))
+              : addOn.options?.map((option, index) => (
+                  <div key={index} className="w-full form-control">
+                    <label className="cursor-pointer label text-base-content">
+                      <span className="flex justify-between ">
+                        <input
+                          name={option.optionNameEng}
+                          type="checkbox"
+                          // defaultChecked={false}
+                          checked={tabsOption?.some(
+                            (e) => e === option.optionId
+                          )}
+                          className="checkbox checkbox-lg checkbox-primary"
+                          onChange={() =>
+                            handleChangeTabOneOption(option.optionId)
+                          }
+                          disabled={!option.isEnable}
+                        />
+                        <span className="ml-5 text-lg label-text opacity-80">
+                          {userLanguage === "th"
+                            ? option.optionNameTh
+                            : option.optionNameEng}
                         </span>
-                      </label>
-                    </div>
-                  ))
-                : addOn.options?.map((option, index) => (
-                    <div key={index} className="w-full form-control">
-                      <label className="cursor-pointer label text-base-content">
-                        <span className="flex justify-between ">
-                          <input
-                            name={option.optionNameEng}
-                            type="checkbox"
-                            // defaultChecked={false}
-                            checked={tabsOption?.some(
-                              (e) => e === option.optionId
-                            )}
-                            className="checkbox checkbox-lg checkbox-primary"
-                            onChange={() =>
-                              handleChangeTabOneOption(option.optionId)
-                            }
-                            disabled={!option.isEnable}
-                          />
-                          <span className="ml-5 text-lg label-text opacity-80">
-                            {userLanguage === "th"
-                              ? option.optionNameTh
-                              : option.optionNameEng}
-                          </span>
-                        </span>
-                        <span className="text-lg label-text">
-                          + {option.price}
-                        </span>
-                      </label>
-                    </div>
-                  ))}
-            </div>
+                      </span>
+                      <span className="text-lg label-text">
+                        + {option.price}
+                      </span>
+                    </label>
+                  </div>
+                ))}
           </div>
         </div>
-      ) : (
-        <></>
-      )}
+      </div>
     </>
   );
 }
