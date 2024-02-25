@@ -158,7 +158,6 @@ export default function Store() {
     setCurrentTime(currentTh);
     ///
     const followOrderStorage = localStorage.getItem("followOrder");
-    console.log(followOrderStorage);
     if (followOrderStorage > 0 || followOrderStorage) {
       const follow = JSON.parse(followOrderStorage);
       // const currentDateTh = new Date(
@@ -177,11 +176,8 @@ export default function Store() {
       const toDateTh1 = currentTh1.split("/");
       const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0].length === 1 ? "0"+toDateTh1[0] : toDateTh1[0]}-${toDateTh1[1]}`;
       // setDateOrder(date);
-      console.log(dateTh1);
-      console.log(follow[0]);
-      console.log(follow[0]?.orderDateTime);
       if (dateTh1 !== follow[0]?.orderDateTime) {
-        // localStorage.setItem("followOrder", JSON.stringify([]));
+        localStorage.setItem("followOrder", JSON.stringify([]));
         return;
       }
       setfollowOrder(follow);

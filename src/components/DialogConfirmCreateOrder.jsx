@@ -165,7 +165,6 @@ export default function DialogConfirmCreateOrder(params) {
         },
       ];
     }
-    console.log(follow);
     localStorage.setItem("followOrder", JSON.stringify(follow));
     setfollowOrder(follow);
   };
