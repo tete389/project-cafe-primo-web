@@ -82,7 +82,8 @@ function ReportDetail(params) {
       {detailOrder ? (
         <>
           {detailOrder?.customerName &&
-            detailOrder?.customerName !== "none" && (
+            detailOrder?.customerName != "none" &&
+            detailOrder?.customerName != "None" && (
               <div className="flex items-center justify-between">
                 <p>ชิ่อลูกค้า</p>
                 <p className="text-2xl text-end stat-value">
