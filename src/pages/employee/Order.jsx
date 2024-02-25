@@ -302,7 +302,7 @@ function ListOrder(params) {
                 </div>
 
                 <span>
-                  {e.customerName === "none"
+                  {e.customerName === "none" || e.customerName === "None"
                     ? ""
                     : "ชื่อลูกค้า: " + e.customerName}
                 </span>

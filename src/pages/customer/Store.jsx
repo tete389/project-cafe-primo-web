@@ -174,7 +174,7 @@ export default function Store() {
       });
 
       const toDateTh1 = currentTh1.split("/");
-      const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0]}-${toDateTh1[1]}`;
+      const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0].length === 1 ? "0"+toDateTh1[0] : toDateTh1[0]}-${toDateTh1[1]}`;
       // setDateOrder(date);
       if (dateTh1 !== follow[0]?.orderDateTime) {
         localStorage.setItem("followOrder", JSON.stringify([]));
