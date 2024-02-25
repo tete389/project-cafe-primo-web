@@ -635,7 +635,7 @@ function RecentMaterialChart(params) {
   const resultMateNameHigh = recentDetailOrder?.recentMaterail?.sort(
     (a, b) => b.quantity - a.quantity
   );
-  const resultMateName = resultMateNameHigh?.map((p) => p.materailName+"/"+p.mate_unit);
+  const resultMateName = resultMateNameHigh?.map((p) => p.materailName+" /"+p.mate_unit);
   const resultMateQuantity = resultMateNameHigh?.map((p) => p.quantity);
 
   const resultRandomColor = resultMateNameHigh?.map(() =>
