@@ -98,8 +98,8 @@ function ReportDetail(params) {
       {detailOrder ? (
         <>
           {detailOrder?.customerName &&
-            detailOrder?.customerName !== "none" &&
-            detailOrder?.customerName !== "None" && (
+            detailOrder?.customerName != "none" &&
+            detailOrder?.customerName != "None" && (
               <div className="flex justify-between text-xl font-bold">
                 <p>ชื่อลูกค้า</p>
                 <p className="text-end">{detailOrder?.customerName}</p>
@@ -107,8 +107,8 @@ function ReportDetail(params) {
             )}
 
           {detailOrder?.note &&
-            detailOrder?.note !== "None" &&
-            detailOrder?.note !== "none" && (
+            detailOrder?.note != "None" &&
+            detailOrder?.note != "none" && (
               <p className="pt-1 stat-title">ข้อความ : {detailOrder?.note}</p>
             )}
 
