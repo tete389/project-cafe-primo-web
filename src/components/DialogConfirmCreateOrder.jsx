@@ -136,7 +136,7 @@ export default function DialogConfirmCreateOrder(params) {
       });
 
       const toDateTh1 = currentTh1.split("/");
-      const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0]}-${toDateTh1[1]}`;
+      const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0].length === 1 ? "0"+toDateTh1[0] : toDateTh1[0]}-${toDateTh1[1]}`;
 
       if (dateTh1 === followOrder[0]?.orderDateTime) {
         follow = [
