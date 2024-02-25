@@ -232,14 +232,18 @@ export default function PopupSelectMenu(props) {
                 {filterSelectForm?.addOnOption.length > 0 &&
                 filterSelectForm?.isEnable &&
                 filterSelectForm?.isMaterialEnable ? (
-                  filterSelectForm?.addOnOption?.map((e) => (
-                    <AddOnBox
-                      key={e.addOnId}
-                      addOn={e}
-                      setOptionSelect={setOptionSelect}
-                      tabsForm={tabsForm}
-                    />
-                  ))
+                  filterSelectForm?.addOnOption?.map((e) =>
+                    e.isEnable ? (
+                      <AddOnBox
+                        key={e.addOnId}
+                        addOn={e}
+                        setOptionSelect={setOptionSelect}
+                        tabsForm={tabsForm}
+                      />
+                    ) : (
+                      <></>
+                    )
+                  )
                 ) : (
                   <div className="flex items-center justify-center h-full">
                     <p className="text-2xl font-semibold">
@@ -368,34 +372,34 @@ function AddOnBox(props) {
         <div className="card-body">
           <div className="text-base-content card-title">
             {/* <div className="absolute dropdown dropdown-end right-2 top-2">
-              <div
-                htmlFor="0"
-                tabIndex={0}
-                className="btn btn-circle btn-ghost btn-x"
-              >
-                <box-icon
-                  name="help-circle"
-                  color="hsl(var(--bc) / var(--tw-text-opacity))"
-                ></box-icon>
-              </div>
-              <div
-                id="0"
-                tabIndex={0}
-                className="dropdown-content z-[1] card card-compact w-64 p-2 shadow bg-base-content text-base-100"
-              >
-                {userLanguage === "th" ? (
-                  <div className="card-body ">
-                    <h2 className="card-title">รายละเอียด</h2>
-                    <p>{addOn.description}</p>
-                  </div>
-                ) : (
-                  <div className="card-body ">
-                    <h2 className="card-title">Description</h2>
-                    <p className="">{addOn.description}</p>
-                  </div>
-                )}
-              </div>
-            </div> */}
+            <div
+              htmlFor="0"
+              tabIndex={0}
+              className="btn btn-circle btn-ghost btn-x"
+            >
+              <box-icon
+                name="help-circle"
+                color="hsl(var(--bc) / var(--tw-text-opacity))"
+              ></box-icon>
+            </div>
+            <div
+              id="0"
+              tabIndex={0}
+              className="dropdown-content z-[1] card card-compact w-64 p-2 shadow bg-base-content text-base-100"
+            >
+              {userLanguage === "th" ? (
+                <div className="card-body ">
+                  <h2 className="card-title">รายละเอียด</h2>
+                  <p>{addOn.description}</p>
+                </div>
+              ) : (
+                <div className="card-body ">
+                  <h2 className="card-title">Description</h2>
+                  <p className="">{addOn.description}</p>
+                </div>
+              )}
+            </div>
+          </div> */}
 
             <p className="text-2xl font-semibold">
               {userLanguage === "th"
@@ -403,14 +407,14 @@ function AddOnBox(props) {
                 : addOn?.addOnTitleEng}
 
               {/* <button
-                className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
-                // onClick={() => deleteOrder(bv.itemId)}
-              >
-                <box-icon
-                  name="help-circle"
-                  color="hsl(var(--bc) / var(--tw-text-opacity))"
-                ></box-icon>
-              </button> */}
+              className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
+              // onClick={() => deleteOrder(bv.itemId)}
+            >
+              <box-icon
+                name="help-circle"
+                color="hsl(var(--bc) / var(--tw-text-opacity))"
+              ></box-icon>
+            </button> */}
 
               {addOn?.isManyOptions ? (
                 <span className="pl-5 text-base opacity-70">
@@ -444,6 +448,7 @@ function AddOnBox(props) {
                           onChange={() =>
                             handleChangeTabsManyOption(option.optionId)
                           }
+                          disabled={!option.isEnable}
                         />
                         <span className="ml-5 text-lg opacity-80 label-text">
                           {userLanguage === "th"
@@ -472,6 +477,7 @@ function AddOnBox(props) {
                           onChange={() =>
                             handleChangeTabOneOption(option.optionId)
                           }
+                          disabled={!option.isEnable}
                         />
                         <span className="ml-5 text-lg label-text opacity-80">
                           {userLanguage === "th"
