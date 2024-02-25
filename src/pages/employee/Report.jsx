@@ -23,10 +23,9 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 export default function Dashboard() {
   const dateStart = `2023-10-01`;
 
-  const currentTh1 = new Date()
-    .toLocaleDateString("en-US", {
-      timeZone: "Asia/Bangkok",
-    })
+  const currentTh1 = new Date().toLocaleDateString("en-US", {
+    timeZone: "Asia/Bangkok",
+  });
   const toDateTh1 = currentTh1.split("/");
   const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0]}-${toDateTh1[1]}`;
 
@@ -141,7 +140,12 @@ export default function Dashboard() {
             <div className=" w-full lg:w-[79.5%] p-1 rounded-b-lg lg:rounded-lg h-max bg-base-100 lg:mb-0">
               {recentDetailOrder && (
                 <RecentOrderIncomeChart
-                  incomeToChart={(recentOrder?.incomeToChart && recentOrder?.incomeToChart.length > 0) ? recentOrder?.incomeToChart : []}
+                  incomeToChart={
+                    recentOrder?.incomeToChart &&
+                    recentOrder?.incomeToChart.length > 0
+                      ? recentOrder?.incomeToChart
+                      : []
+                  }
                   year={toDateTh1[2]}
                   month={toDateTh1[0]}
                 />
@@ -359,7 +363,13 @@ function TableOrder(params) {
             <tr key={e.orderId} className="hover">
               <th>{e.orderNumber}</th>
               <td>{manageDate(e.orderDate)}</td>
-              <td>{e.customerName}</td>
+              <td>
+                {e.customerName &&
+                e.customerName != "none" &&
+                e.customerName != "None"
+                  ? e.customerName
+                  : "ไม่ระบุ"}
+              </td>
               <td>{e.orderPrice}</td>
               <th>
                 <ByCassStatus status={e.status} />
@@ -412,8 +422,8 @@ function RecentOrderIncomeChart(params) {
   const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   if (incomeToChart.length > 0) {
-    for(const incomeChart of incomeToChart){
-      data[(Number(incomeChart[0] - 0) - 1)] =  incomeChart[1]
+    for (const incomeChart of incomeToChart) {
+      data[Number(incomeChart[0] - 0) - 1] = incomeChart[1];
     }
   }
   // data[month - 1] = incomeOfMonth
@@ -635,7 +645,9 @@ function RecentMaterialChart(params) {
   const resultMateNameHigh = recentDetailOrder?.recentMaterail?.sort(
     (a, b) => b.quantity - a.quantity
   );
-  const resultMateName = resultMateNameHigh?.map((p) => p.materailName+" /"+p.mate_unit);
+  const resultMateName = resultMateNameHigh?.map(
+    (p) => p.materailName + " /" + p.mate_unit
+  );
   const resultMateQuantity = resultMateNameHigh?.map((p) => p.quantity);
 
   const resultRandomColor = resultMateNameHigh?.map(() =>
