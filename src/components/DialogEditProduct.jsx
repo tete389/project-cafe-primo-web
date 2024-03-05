@@ -21,6 +21,10 @@ import ResErrorScreen from "./ResErrorScreen";
 
 import DialogAddCategoryPanal from "./DialogAddCategoryPanal";
 import ToastAlertLoading from "./ToastAlertLoading";
+import { Tab, Tabs } from "@mui/material";
+import DialogEditFormProd from "./DialogEditFormProd";
+import MenuForm from "../pages/employee/product/MenuForm";
+import DialogEditMaterialUse from "./DialogEditMaterialUse";
 
 export default function DialogEditProduct(params) {
   const { filterSelectProdBase, handleClearOpenMenuSelectDetail } = params;
@@ -43,10 +47,16 @@ export default function DialogEditProduct(params) {
     }, 200);
   };
 
+  const [valueBase, setValueBase] = useState(0);
+  const handleBaseChange = (event, newValue) => {
+    setValueBase(newValue);
+  };
+
   useEffect(() => {
     return () => clearTimeout(timeToOut);
   }, [timeToOut]);
 
+  // console.log(resProductDetail);
   if (resLoading) {
     return (
       <>
@@ -89,7 +99,7 @@ export default function DialogEditProduct(params) {
 
   return (
     <>
-      <div className="h-full p-0 overflow-hidden modal-box">
+      <div className="h-full p-0 overflow-hidden modal-box ">
         <form method="dialog" className="p-2 bg-base-200">
           <p className="text-3xl font-bold">
             {filterSelectProdBase?.prodTitleTh}
@@ -102,36 +112,58 @@ export default function DialogEditProduct(params) {
           </button>
         </form>
         <div className="h-full px-0 pt-0 overflow-auto card-body scrollerBar">
-          <div className="m-2 rounded-md bg-base-100">
-            {resProductDetail && (
-              <EditProductPanel
-                filterSelectProdBase={filterSelectProdBase}
-                setOnOpenToast={setOnOpenToast}
-                setResUpdateStatusState={setResUpdateStatusState}
-              />
-            )}
-          </div>
-          <div className="m-2 rounded-md bg-base-200">
-            {resProductDetail && (
-              <AddCategoryPanel
-                resProductDetail={resProductDetail}
-                urlDetail={urlDetail}
-                setOnOpenToast={setOnOpenToast}
-                setResUpdateStatusState={setResUpdateStatusState}
-              />
-            )}
-          </div>
+          <Tabs
+            value={valueBase}
+            onChange={handleBaseChange}
+            variant="scrollable"
+            scrollButtons
+            allowScrollButtonsMobile
+            aria-label="scrollable force tabs example"
+          >
+            <Tab label="รายละเอียดสินค้า" />
+            <Tab label="รูปแบบสินค้า" />
+            {/* <Tab label="เพิ่มเติม" /> */}
+          </Tabs>
+          {valueBase === 0 ? (
+            <>
+              <div className="m-2 rounded-md bg-base-100">
+                {resProductDetail && (
+                  <EditProductPanel
+                    filterSelectProdBase={filterSelectProdBase}
+                    setOnOpenToast={setOnOpenToast}
+                    setResUpdateStatusState={setResUpdateStatusState}
+                  />
+                )}
+              </div>
+              <div className="m-2 rounded-md bg-base-200">
+                {resProductDetail && (
+                  <AddCategoryPanel
+                    resProductDetail={resProductDetail}
+                    urlDetail={urlDetail}
+                    setOnOpenToast={setOnOpenToast}
+                    setResUpdateStatusState={setResUpdateStatusState}
+                  />
+                )}
+              </div>
 
-          <div className="m-2 mb-10 rounded-md bg-base-200">
-            {resProductDetail && (
-              <AddMaterialPanel
-                resProductDetail={resProductDetail}
-                urlDetail={urlDetail}
-                setOnOpenToast={setOnOpenToast}
-                setResUpdateStatusState={setResUpdateStatusState}
-              />
-            )}
-          </div>
+              <div className="m-2 mb-10 rounded-md bg-base-200">
+                {resProductDetail && (
+                  <AddMaterialPanel
+                    resProductDetail={resProductDetail}
+                    urlDetail={urlDetail}
+                    setOnOpenToast={setOnOpenToast}
+                    setResUpdateStatusState={setResUpdateStatusState}
+                  />
+                )}
+              </div>
+            </>
+          ) : valueBase === 1 ? (
+            <>
+              <MenuForm prodId={filterSelectProdBase.prodBaseId} />
+            </>
+          )  : (
+            <></>
+          )}
         </div>
       </div>
 
@@ -188,7 +220,6 @@ function EditProductPanel(params) {
     }));
   };
 
-  
   //  send  update
   const sendUpdateBase = async () => {
     if (
@@ -553,6 +584,16 @@ function AddMaterialPanel(params) {
     window.my_modal_addMaterialUse.close();
   };
 
+  const openEdit = () => {
+    setOpenAddMaterailUse(true);
+    window.my_modal_editMaterialUse.showModal();
+  };
+
+  const closeEdit = () => {
+    setOpenAddMaterailUse(false);
+    window.my_modal_editMaterialUse.close();
+  };
+
   const sendDeleteMaterialUsed = async (prodId, mateId) => {
     const deleteMateUse = [
       {
@@ -649,6 +690,7 @@ function AddMaterialPanel(params) {
           isLoadingUpdate: false,
         }));
         closeAdd();
+        closeEdit();
       }
     };
     ////////// use
@@ -660,6 +702,12 @@ function AddMaterialPanel(params) {
       <div className="card-body">
         <div className="flex justify-between">
           <span className="font-bold">ส่วนผสม</span>
+          <button
+            className="btn btn-xs btn-outline btn-secondary"
+            onClick={() => openEdit()}
+          >
+            แก้ไขส่วนผสม
+          </button>
           <button
             className="btn btn-xs btn-outline btn-primary"
             onClick={() => openAdd()}
@@ -695,6 +743,17 @@ function AddMaterialPanel(params) {
             idIsUsed={resProductDetail.prodBaseId}
             materialUse={resProductDetail.materialUse}
             closeAdd={closeAdd}
+            sendUpdateMateUsed={sendUpdateProdBaseMateUsed}
+          />
+        )}
+      </dialog>
+
+      <dialog id="my_modal_editMaterialUse" className="modal">
+        {openAddMaterailUse && (
+          <DialogEditMaterialUse
+            idIsUsed={resProductDetail.prodBaseId}
+            materialUse={resProductDetail.materialUse}
+            closeEdit={closeEdit}
             sendUpdateMateUsed={sendUpdateProdBaseMateUsed}
           />
         )}

@@ -6,6 +6,7 @@ import {
   BaseURL,
   deleteProductBase,
   findProductBaseAll,
+  haveCountform,
   pageNum,
   pageSize,
 } from "../../service/BaseURL";
@@ -21,7 +22,7 @@ import DialogConfirmDelete from "../../components/DialogConfirmDelete";
 
 export default function MenuProduct() {
  
-  const prodBaseUrl = `${BaseURL}${findProductBaseAll}?&${pageSize}50&${pageNum}0`;
+  const prodBaseUrl = `${BaseURL}${findProductBaseAll}?${haveCountform}&${pageSize}50&${pageNum}0`;
   const { resMenuProduct, resLoading, resError } = getMenuProduct(prodBaseUrl);
 
   const { setOnOpenToast, setResUpdateStatusState } =
@@ -200,6 +201,7 @@ export default function MenuProduct() {
             <DialogCreateProduct
               prodBaseUrl={prodBaseUrl}
               setOpenCreateProduct={setOpenCreateProduct}
+              handleOpenMenuSelectDetail={handleOpenMenuSelectDetail}
             />
           )}
         </dialog>

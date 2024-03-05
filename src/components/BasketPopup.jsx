@@ -27,6 +27,8 @@ export default function BasketPopup(props) {
 
   const [openBox, setOpenBox] = useState({ box1: false, box2: false });
   let discountPoint = 0;
+  discountPoint =
+    orderValue?.discount?.spendPoint / setingShopData?.pointSpendRate;
   const [orderPriceAll, setOrderPriceAll] = useState(0);
   // const [createOrder, setCreateOrder] = useState({
   //   note: "",
@@ -45,9 +47,11 @@ export default function BasketPopup(props) {
   };
 
   const handleCreateDiscount = (value) => {
+    // setOrderPriceAll((prev) => prev - (value?.spendPoint / setingShopData?.pointSpendRate));
     setOrderValue((prev) => ({
       ...prev,
       discount: value,
+      orderPriceAll: orderPriceAll - (value?.spendPoint / setingShopData?.pointSpendRate),
     }));
   };
 
@@ -55,6 +59,7 @@ export default function BasketPopup(props) {
     setOrderValue((prev) => ({
       ...prev,
       prodRequests: value,
+      orderPriceAll: orderPriceAll,
     }));
   };
 
@@ -68,6 +73,7 @@ export default function BasketPopup(props) {
         spendPoint: 0,
       },
       prodRequests: [],
+      orderPriceAll: orderPriceAll,
     }));
   }, []);
 
@@ -90,10 +96,11 @@ export default function BasketPopup(props) {
       ];
     });
     handleCreateprodRequsts(prods);
+    setOrderValue((prev) => ({
+      ...prev,
+      orderPriceAll: price,
+    }));
   }, [basketValue]);
-
-  discountPoint =
-    orderValue?.discount?.spendPoint / setingShopData?.pointSpendRate;
 
   return (
     <div className="w-screen md:w-[30rem] h-screen">

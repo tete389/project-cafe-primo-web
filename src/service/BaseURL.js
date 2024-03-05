@@ -14,6 +14,7 @@ export const haveFormName = "haveform=Name"
 export const haveMinPriceIb = "minPrice=true"
 export const haveCategory = "haveCate=true"
 export const haveMateUse = "haveMateUse=true"
+export const haveCountform = "haveCountform=true"
 export const findProductBaseAll = `${Product}/getProductBase`
 export const findProductBaseById = `${Product}/getProductBase?baseId=`
 export const findProductBaseByCategoryId = `${Product}/getProductBase?cateId=`
@@ -23,6 +24,7 @@ export const deleteBaseFromCategory = `${Product}/deleteFormCategory`
 export const createBaseProduct = `${Product}/createProductBase`
 export const deleteProductBase = `${Product}/deleteProductBase`
 export const uploadImage = `${Product}/uploadImage`
+
 
 /// ProductForm Url
 export const haveAddOn = "addOn=true"
@@ -94,8 +96,10 @@ export const haveIncome = `&income=true`
 export const requestOrder = `/order/createOrder`
 export const haveOrderDetail = `orderDetail=true`
 export const findOrderById = `/order/getOrderById${orderId}`
+export const findOrderByIdList = `/order/getOrderByListId`
 export const updateOrder = `/order/updateProductInOrder`
 export const getNotifications = `/order/getEmployeeNotifications`
+export const getNotificationsCustomer = `/order/getCustomerNotifications`
 /// resqust token
 export const updateStatusOrder = `/order/updateStatusOrder`
 export const deleteOder = `/order/deleteOder`

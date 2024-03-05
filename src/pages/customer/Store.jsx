@@ -1,10 +1,18 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Fab, SwipeableDrawer } from "@mui/material";
+import {
+  Box,
+  Fab,
+  SwipeableDrawer,
+  Tab,
+  Tabs,
+  createTheme,
+  ThemeProvider,
+} from "@mui/material";
 import PropTypes from "prop-types";
 import { createContext, useContext, useEffect, useState } from "react";
 import useSWR from "swr";
 import "../../style/store.css";
-
+// import clsx from 'clsx';
 import BasketPopup from "../../components/BasketPopup";
 
 import axios from "axios";
@@ -174,8 +182,12 @@ export default function Store() {
       });
 
       const toDateTh1 = currentTh1.split("/");
-      const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0].length === 1 ? "0"+toDateTh1[0] : toDateTh1[0]}-${toDateTh1[1]}`;
+      const dateTh1 = `${toDateTh1[2]}-${
+        toDateTh1[0].length === 1 ? "0" + toDateTh1[0] : toDateTh1[0]
+      }-${toDateTh1[1].length === 1 ? "0" + toDateTh1[1] : toDateTh1[1]}`;
       // setDateOrder(date);
+      console.log(dateTh1);
+      console.log(follow[0]?.orderDateTime);
       if (dateTh1 !== follow[0]?.orderDateTime) {
         localStorage.setItem("followOrder", JSON.stringify([]));
         return;
@@ -247,7 +259,6 @@ export default function Store() {
       </>
     );
   }
-
 
   return (
     <LanguageContext.Provider value={userLanguage}>
@@ -469,33 +480,99 @@ function BodyStroe(params) {
 
   const userLanguage = useContext(LanguageContext);
 
-  const handleChangeTabs = (index) => {
+  const handleChangeTabs = (event, index) => {
     setTabsValue(index);
   };
 
+  const theme = createTheme({
+    components: {
+      MuiTabs: {
+        styleOverrides: {
+          root: {
+            "& button": {
+              borderRadius: "10px",
+              opacity: "1",
+              paddingLeft: "20px",
+              paddingRight: "20px",
+              paddingBottom: "1px",
+              paddingTop: "1px",
+              minWidth: "96px",
+              backgroundColor: `hsl(var(--b2) / var(--tw-bg-opacity))`,
+              color: "hsl(var(--nc) / var(--tw-text-opacity))",
+              fontWeight: "700",
+              fontSize: "20px",
+              lineHeight: "28px",
+              marginRight: "2px",
+              marginLeft: "2px",
+              marginTop: "1px",
+              marginBottom: "1px",
+            },
+            "& button.Mui-selected": {
+              backgroundColor: `hsl(var(--n) / var(--tw-bg-opacity))`,
+              color: `hsl(var(--nc) / var(--tw-bg-opacity))`,
+            },
+            "& button.Mui-disabled": {
+              backgroundColor: `hsl(var(--b2) / var(--tw-bg-opacity))`,
+              color: `hsl(var(--nc) / var(--tw-bg-opacity))`,
+            },
+          },
+        },
+      },
+    },
+  });
+
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <div className="z-40 h-screen bg-base-300">
         <ul className="fixed pt-[56px] z-40 w-screen  overflow-auto lg:justify-center flex-nowrap menu menu-horizontal bg-base-100 scrollerBar">
-          {categoryData &&
-            categoryData?.map((cate, index) => (
-              <li
-                key={cate.cateId}
-                className={`p-1 text-xl font-bold ${
-                  !cate.isEnable && `hidden`
-                }`}
-                onClick={() => handleChangeTabs(index)}
-              >
-                <a
-                  className={`  ${
-                    tabsValue === index ? `active` : `bg-base-200`
-                  } px-5 min-w-[6rem] justify-center`}
+          <Tabs
+            value={tabsValue}
+            onChange={handleChangeTabs}
+            variant="scrollable"
+            scrollButtons="auto"
+            allowScrollButtonsMobile
+            aria-label="scrollable force tabs"
+            TabIndicatorProps={{
+              hidden: true,
+            }}
+          >
+            {categoryData &&
+              categoryData?.map((cate, index) => (
+                <Tab
+                  disableRipple={true}
+                  disabled={!cate.isEnable}
+                  hidden={false}
+                  key={cate.cateId}
+                  // className={`${
+                  //   tabsValue === index ? `active` : `bg-base-100`
+                  // } px-5 min-w-[6rem] justify-center`}
+                  label={
+                    userLanguage === "th" ? cate.cateNameTh : cate.cateNameEng
+                  }
+                />
+              ))}
+
+            {/* {categoryData &&
+              categoryData?.map((cate, index) => (
+                <li
+                  key={cate.cateId}
+                  className={`p-1 text-xl font-bold ${
+                    !cate.isEnable && `hidden`
+                  }`}
+                  onClick={() => handleChangeTabs(index)}
                 >
-                  {userLanguage === "th" ? cate.cateNameTh : cate.cateNameEng}
-                </a>
-              </li>
-            ))}
+                  <a
+                    className={`  ${
+                      tabsValue === index ? `active` : `bg-base-200`
+                    } px-5 min-w-[6rem] justify-center`}
+                  >
+                    {userLanguage === "th" ? cate.cateNameTh : cate.cateNameEng}
+                  </a>
+                </li>
+              ))} */}
+          </Tabs>
         </ul>
+
         <div className="container h-screen mx-auto overflow-hidden ">
           <div className="scrollerBar grid content-start h-full grid-cols-2 gap-3 overflow-auto sm:gap-5 md:gap-8 md:grid-cols-3 lg:grid-cols-4 xl:mx-24 standard:mx-1 pt-32 md:pt-36 pb-[11rem]">
             {categoryData ? (
@@ -581,7 +658,7 @@ function BodyStroe(params) {
           </div>
         </div>
       </div>
-    </>
+    </ThemeProvider>
   );
 }
 
