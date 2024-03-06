@@ -95,19 +95,18 @@ export default function DialogCreateProduct(params) {
   const handleOnCloseToEdit = () => {
     timeToOut = setTimeout(() => {
       setOpenCreateProduct(false);
+      handleOpenMenuSelectDetail(
+        resUpdateStatusState.resUpdate.prodBaseId,
+        resUpdateStatusState.resUpdate.prodTitleTh,
+        0
+      ),
+        setResUpdateStatusState({
+          resUpdate: "",
+          errorUpdate: "",
+          isLoadingUpdate: false,
+        });
+      window.my_modal_EditProduct.showModal();
     }, 200);
-
-    handleOpenMenuSelectDetail(
-      resUpdateStatusState.resUpdate.prodBaseId,
-      resUpdateStatusState.resUpdate.prodTitleTh,
-      0
-    ),
-      setResUpdateStatusState({
-        resUpdate: "",
-        errorUpdate: "",
-        isLoadingUpdate: false,
-      });
-    window.my_modal_EditProduct.showModal();
   };
 
   useEffect(() => {
