@@ -113,7 +113,7 @@ export default function DialogEditProduct(params) {
             ✕
           </button>
         </form>
-        <div className="h-full px-0 pt-0 overflow-auto card-body scrollerBar">
+        <div className="h-full px-0 pt-0 overflow-auto card-body ">
           <Tabs
             value={valueBase}
             onChange={handleBaseChange}
@@ -128,7 +128,7 @@ export default function DialogEditProduct(params) {
           </Tabs>
           {valueBase === 0 ? (
             <>
-              <div className="m-2 rounded-md bg-base-100">
+              <div className="h-full m-2 overflow-auto rounded-md bg-base-100 scrollerBar">
                 {resProductDetail && (
                   <EditProductPanel
                     resProductDetail={resProductDetail}
@@ -162,9 +162,9 @@ export default function DialogEditProduct(params) {
               </div> */}
             </>
           ) : valueBase === 1 ? (
-            <>
+            <div className="h-full px-0 pt-0 overflow-auto scrollerBar">
               <TableMenuForm prodId={filterSelectProdBase.prodBaseId} />
-            </>
+            </div>
           ) : (
             <></>
           )}
@@ -412,7 +412,7 @@ function EditProductPanel(params) {
                 <img
                   src={`/images/cafe_image3.jpg`}
                   alt="caffe"
-                  className="object-cover rounded-md w-50 h-45"
+                  className="object-cover rounded-md w-52 h-46"
                 />
               ) : (
                 <img

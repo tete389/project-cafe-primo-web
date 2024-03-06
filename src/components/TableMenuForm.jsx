@@ -177,10 +177,10 @@ function FormProdPanel(params) {
         <thead>
           <tr>
             <th></th>
-            <th className="w-[40%] ">รูปแบบสินค้า</th>
+            <th className="w-[20%] ">รูปแบบสินค้า</th>
             <th className="w-[15%] text-center">ราคา</th>
             <th className="w-[20%] text-center">สถานะ</th>
-            <th className="px-1 text-end">
+            <th className=" text-end">
               <button
                 className="btn btn-xs btn-outline btn-primary"
                 onClick={() => createFormProduct()}
