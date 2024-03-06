@@ -91,7 +91,8 @@ export default function DialogCreateProduct(params) {
     }, 200);
     handleOpenMenuSelectDetail(
       resUpdateStatusState.resUpdate.prodBaseId,
-      resUpdateStatusState.resUpdate.prodTitleTh
+      resUpdateStatusState.resUpdate.prodTitleTh,
+      0
     ),
       window.my_modal_EditProduct.showModal();
   };

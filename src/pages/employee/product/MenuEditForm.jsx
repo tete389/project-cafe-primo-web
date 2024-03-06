@@ -399,7 +399,7 @@ function EditPanel(params) {
           )}
         </div>
 
-        <div className="justify-between w-[60%] flex">
+        <div className="justify-between w-[20%] flex">
           <button className=" btn btn-primary" onClick={() => sendUpdateForm()}>
             บันทัก
           </button>

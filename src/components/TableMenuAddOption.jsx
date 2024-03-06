@@ -276,14 +276,7 @@ function TaBlePanalOption(params) {
           <p>{resOption.optionNameTh}</p>
           <p>{resOption.optionNameEng}</p>
         </div>
-        <button onClick={() => handleDetail()}>
-          <box-icon
-            name="edit"
-            type="solid"
-            size="sm"
-            color="hsl(var(--wa) / var(--tw-bg-opacity))"
-          ></box-icon>
-        </button>
+        
       </td>
       <th className="text-center">
         <p>{resOption.price}</p>
@@ -325,12 +318,20 @@ function TaBlePanalOption(params) {
         )}
       </th>
       <th className="text-end">
+      <div className="join">
+      <button 
+      className="btn btn-primary btn-sm text-base-100 join-item"
+      onClick={() => handleDetail()}
+      >
+      <span>แก้ไข</span>
+        </button>
         <button
-          className="btn btn-error btn-xs text-base-100"
+          className="btn btn-error btn-sm text-base-100 join-item"
           onClick={() => handleOpenDeleteOption(resOption.optionId)}
         >
           <span>ลบ</span>
         </button>
+        </div>
       </th>
     </tr>
   );

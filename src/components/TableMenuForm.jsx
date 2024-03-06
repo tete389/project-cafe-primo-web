@@ -276,14 +276,6 @@ function TabBleFormPanal(params) {
           <p>{productForm?.prodFormTh}</p>
           <p>{productForm?.prodFormEng}</p>
         </div>
-        <button onClick={() => handleFormDetail()}>
-          <box-icon
-            name="edit"
-            type="solid"
-            size="sm"
-            color="hsl(var(--wa) / var(--tw-bg-opacity))"
-          ></box-icon>
-        </button>
       </td>
       <th className="text-center ">
         <p>{productForm?.price}</p>
@@ -291,9 +283,8 @@ function TabBleFormPanal(params) {
 
       <th>
         {productForm?.isMaterialEnable ? (
-          // <div className="form-control">
           <label
-            className="px-0 cursor-pointer label"
+            className="px-0 cursor-pointer label w-28"
             htmlFor={productForm.prodFormId}
           >
             <span className="label-text">
@@ -314,7 +305,7 @@ function TabBleFormPanal(params) {
           </label>
         ) : (
           // </div>
-          <label className="px-0 label" htmlFor={productForm.prodFormId}>
+          <label className="px-0 label w-28" htmlFor={productForm.prodFormId}>
             <span className="label-text">ปิดโดยคงคลัง</span>
             <input
               id={productForm.prodFormId}
@@ -327,12 +318,26 @@ function TabBleFormPanal(params) {
       </th>
 
       <th className="text-end">
-        <button
-          className="btn btn-error btn-xs text-base-100"
-          onClick={() => deleteFormProduct(productForm.prodFormId)}
-        >
-          <span>ลบ</span>
-        </button>
+        <div className="join">
+          <button
+            className="btn join-item btn-warning btn-sm text-base-100"
+            onClick={() => handleFormDetail()}
+          >
+            {/* <box-icon
+            name="edit"
+            type="solid"
+            size="sm"
+            color="hsl(var(--wa) / var(--tw-bg-opacity))"
+          ></box-icon> */}
+            <span>แก้ไขรูปแบบ</span>
+          </button>
+          <button
+            className="btn join-item btn-error btn-sm text-base-100"
+            onClick={() => deleteFormProduct(productForm.prodFormId)}
+          >
+            <span>ลบ</span>
+          </button>
+        </div>
       </th>
     </tr>
   );

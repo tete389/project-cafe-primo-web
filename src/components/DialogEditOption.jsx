@@ -197,7 +197,7 @@ export default function DialogEditOption(params) {
               </>
             )}
 
-            <div className="m-2 mb-10 rounded-md bg-base-200">
+            {/* <div className="m-2 mb-10 rounded-md bg-base-200">
               {filterSelectOption && (
                 <AddMaterialPanel
                   optionId={filterSelectOption?.optionId}
@@ -206,7 +206,7 @@ export default function DialogEditOption(params) {
                   setResUpdateStatusState={setResUpdateStatusState}
                 />
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

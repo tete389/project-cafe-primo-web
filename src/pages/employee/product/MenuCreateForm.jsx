@@ -181,7 +181,7 @@ export default function MenuCreateForm(params) {
             ) : resUpdateStatusOrderState.resUpdate ? (
               // <form method="dialog" className="w-full">
                 <button
-                  className="w-full btn btn-neutral"
+                  className="w-[50%] btn btn-neutral"
                   onClick={() => handleOnClose()}
                 >
                   แก้ไขเพิ่มเติม
@@ -189,7 +189,7 @@ export default function MenuCreateForm(params) {
               // </form>
             ) : (
               <button
-                className="w-full btn btn-primary "
+                className="w-[50%] btn btn-primary "
                 onClick={() => sendCreateForm()}
               >
                 สร้าง

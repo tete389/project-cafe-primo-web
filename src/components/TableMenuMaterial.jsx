@@ -35,7 +35,7 @@ export default function TableMenuMaterial(params) {
           <thead>
             <tr>
               <th></th>
-              <th className="w-[30%]">ชื่อรายการ</th>
+              <th className="w-[25%]">ชื่อรายการ</th>
               <th className="w-[10%] text-center">หน่วย</th>
               <th className="w-[15%] text-center">ปริมาณ</th>
               <th className="w-[20%] text-center ">รายการที่ใช้งาน</th>
@@ -76,7 +76,7 @@ function TaBlePanal(params) {
     handleOpenMenuSelectDetail,
     handleOpenMenuSelectUsed,
     handleOpenUpdateStockMate,
-    handleOpenDeleteMate
+    handleOpenDeleteMate,
   } = params;
 
   const { setOnOpenToast, setResUpdateStatusState } =
@@ -135,17 +135,10 @@ function TaBlePanal(params) {
     <tr className="hover bg-base-100">
       <th>{index + 1}</th>
       <td>
-        <div className="flex flex-row items-center justify-between">
-          <p>{resMate.mateName}</p>
-          <button onClick={() => handleDetail()}>
-            <box-icon
-              name="edit"
-              type="solid"
-              size="sm"
-              color="hsl(var(--wa) / var(--tw-bg-opacity))"
-            ></box-icon>
-          </button>
-        </div>
+        {/* <div className="flex flex-row items-center justify-between"> */}
+        <p>{resMate.mateName}</p>
+
+        {/* </div> */}
       </td>
       <th className="text-center">
         <span className="badge badge-ghost badge-sm">{resMate.mateUnit}</span>
@@ -156,7 +149,7 @@ function TaBlePanal(params) {
           handleOpenUpdateStockMate(resMate.mateId, resMate.mateName)
         }
       >
-        <span className="btn btn-xs btn-warning ">{resMate.stock}</span>
+        <span className="btn btn-xs btn-info text-base-100">{resMate.stock}</span>
       </td>
       <td className="text-center">
         <button
@@ -187,12 +180,18 @@ function TaBlePanal(params) {
       </td>
 
       <td className="text-end">
+      <div className="join">
+        <button className="btn btn-warning btn-sm text-base-100 join-item" onClick={() => handleDetail()}>
+        <span>แก้ไข</span>
+          
+        </button>
         <button
-          className="btn btn-error btn-xs text-base-100"
+          className="btn btn-error btn-sm text-base-100 join-item"
           onClick={() => handleOpenDeleteMate(resMate.mateId)}
         >
           <span>ลบ</span>
         </button>
+        </div>
       </td>
     </tr>
   );

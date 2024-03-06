@@ -20,12 +20,12 @@ export default function TableMenuProduct(params) {
           {/* head */}
           <thead>
             <tr>
-              <th>ลำดับ</th>
-              <th></th>
-              <th className="w-[35%] ">ชื่อสินค้า</th>
-              <th className="w-[25%] text-center">รูปแบบสินค้า</th>
+              <th className="w-[5%] ">ลำดับ</th>
+              <th ></th>
+              <th className="w-[15%] ">ชื่อสินค้า</th>
+              <th className="w-[15%] text-center">รูปแบบสินค้า</th>
               <th className="w-[15%] text-center">สถานะ</th>
-              <th className="px-1 text-end">
+              <th className="w-[30%] text-end">
                 <button
                   className=" btn btn-xs btn-outline btn-primary"
                   onClick={() => handleOpenCreateProduct()}
@@ -182,7 +182,7 @@ function TaBlePanal(params) {
         </button> */}
       </td>
 
-      <td className="rounded-l-md">
+      <td className="text-right rounded-l-md">
         <label
           className="px-0 cursor-pointer w-28 label"
           htmlFor={productBase.prodBaseId}
@@ -221,12 +221,26 @@ function TaBlePanal(params) {
             onClick={() => {
               handleOpenMenuSelect(
                 productBase.prodBaseId,
-                productBase.prodTitleTh
+                productBase.prodTitleTh,
+                0
               ),
                 window.my_modal_EditProduct.showModal();
             }}
           >
             <span>แก้ไข</span>
+          </button>
+          <button
+            className="btn btn-info btn-sm join-item text-base-100"
+            onClick={() => {
+              handleOpenMenuSelect(
+                productBase.prodBaseId,
+                productBase.prodTitleTh,
+                1
+              ),
+                window.my_modal_EditProduct.showModal();
+            }}
+          >
+            <span>รูปแบบสินค้า</span>
           </button>
           <button
             className="btn btn-error btn-sm text-base-100 join-item"

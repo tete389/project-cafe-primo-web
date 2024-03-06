@@ -6,7 +6,7 @@ import ToastAlertError from "./ToastAlertError";
 import ToastAlertSuccess from "./ToastAlertSuccess";
 
 export default function DialogCreateAddOn(params) {
-  const { addOnUrl, setOpenCreateAddOn } = params;
+  const { addOnUrl, handleOpenMenuAddOnDetail, setOpenCreateAddOn } = params;
   const { mutate } = useSWRConfig();
 
   const [resUpdateStatusState, setResUpdateStatusState] = useState({
@@ -71,7 +71,12 @@ export default function DialogCreateAddOn(params) {
           resUpdate: data,
           errorUpdate: "",
         }));
-        mutate(addOnUrl);
+        await mutate(addOnUrl);
+        setDataCreateAddOn({
+          addOnTitleTh: "",
+          addOnTitleEng: "",
+          isManyOptions: false,
+        });
       } catch (error) {
         console.error("error : ", error);
         setResUpdateStatusState((prev) => ({
@@ -95,6 +100,23 @@ export default function DialogCreateAddOn(params) {
   const handleOnClose = () => {
     timeToOut = setTimeout(() => {
       setOpenCreateAddOn(false);
+    }, 200);
+  };
+
+  const handleOnCloseToDetail = () => {
+    timeToOut = setTimeout(() => {
+      // setOpenCreateAddOn(false);
+      handleOpenMenuAddOnDetail(
+        resUpdateStatusState.resUpdate.addOnId,
+        resUpdateStatusState.resUpdate.addOnTitleTh,
+        1
+      );
+      setResUpdateStatusState({
+        resUpdate: "",
+        errorUpdate: "",
+        isLoadingUpdate: false,
+      });
+      window.my_modal_EditAddOn.showModal();
     }, 200);
   };
 
@@ -131,9 +153,7 @@ export default function DialogCreateAddOn(params) {
 
             <div className="form-control">
               <label className="label" htmlFor="addTitleEng">
-                <span className="label-text">
-                  ชื่อตัวเลือกสินค้า - อังกฤษ
-                </span>
+                <span className="label-text">ชื่อตัวเลือกสินค้า - อังกฤษ</span>
               </label>
               <input
                 id="addTitleEng"
@@ -173,7 +193,7 @@ export default function DialogCreateAddOn(params) {
               <div className="mt-6 form-control">
                 <button
                   className="btn btn-neutral"
-                  onClick={() => handleOnClose()}
+                  onClick={() => handleOnCloseToDetail()}
                 >
                   สำเร็จ
                 </button>

@@ -25,9 +25,11 @@ import { Tab, Tabs } from "@mui/material";
 import DialogEditFormProd from "./DialogEditFormProd";
 import MenuForm from "../pages/employee/product/MenuForm";
 import DialogEditMaterialUse from "./DialogEditMaterialUse";
+import TableMenuForm from "./TableMenuForm";
 
 export default function DialogEditProduct(params) {
-  const { filterSelectProdBase, handleClearOpenMenuSelectDetail } = params;
+  const { keyPage, filterSelectProdBase, handleClearOpenMenuSelectDetail } =
+    params;
 
   const urlDetail = `${BaseURL}${findProductBaseById}${filterSelectProdBase.prodBaseId}&${haveMateUse}&${haveCategory}`;
   const { resProductDetail, resLoading, resError } =
@@ -47,7 +49,7 @@ export default function DialogEditProduct(params) {
     }, 200);
   };
 
-  const [valueBase, setValueBase] = useState(0);
+  const [valueBase, setValueBase] = useState(keyPage || 0);
   const handleBaseChange = (event, newValue) => {
     setValueBase(newValue);
   };
@@ -99,7 +101,7 @@ export default function DialogEditProduct(params) {
 
   return (
     <>
-      <div className="h-full p-0 overflow-hidden modal-box ">
+      <div className="w-11/12 h-full max-w-5xl p-0 overflow-hidden modal-box">
         <form method="dialog" className="p-2 bg-base-200">
           <p className="text-3xl font-bold">
             {filterSelectProdBase?.prodTitleTh}
@@ -129,13 +131,15 @@ export default function DialogEditProduct(params) {
               <div className="m-2 rounded-md bg-base-100">
                 {resProductDetail && (
                   <EditProductPanel
+                    resProductDetail={resProductDetail}
+                    urlDetail={urlDetail}
                     filterSelectProdBase={filterSelectProdBase}
                     setOnOpenToast={setOnOpenToast}
                     setResUpdateStatusState={setResUpdateStatusState}
                   />
                 )}
               </div>
-              <div className="m-2 rounded-md bg-base-200">
+              {/* <div className="m-2 rounded-md bg-base-200">
                 {resProductDetail && (
                   <AddCategoryPanel
                     resProductDetail={resProductDetail}
@@ -144,9 +148,9 @@ export default function DialogEditProduct(params) {
                     setResUpdateStatusState={setResUpdateStatusState}
                   />
                 )}
-              </div>
+              </div> */}
 
-              <div className="m-2 mb-10 rounded-md bg-base-200">
+              {/* <div className="m-2 mb-10 rounded-md bg-base-200">
                 {resProductDetail && (
                   <AddMaterialPanel
                     resProductDetail={resProductDetail}
@@ -155,13 +159,13 @@ export default function DialogEditProduct(params) {
                     setResUpdateStatusState={setResUpdateStatusState}
                   />
                 )}
-              </div>
+              </div> */}
             </>
           ) : valueBase === 1 ? (
             <>
-              <MenuForm prodId={filterSelectProdBase.prodBaseId} />
+              <TableMenuForm prodId={filterSelectProdBase.prodBaseId} />
             </>
-          )  : (
+          ) : (
             <></>
           )}
         </div>
@@ -189,8 +193,13 @@ export default function DialogEditProduct(params) {
 }
 
 function EditProductPanel(params) {
-  const { filterSelectProdBase, setOnOpenToast, setResUpdateStatusState } =
-    params;
+  const {
+    resProductDetail,
+    urlDetail,
+    filterSelectProdBase,
+    setOnOpenToast,
+    setResUpdateStatusState,
+  } = params;
 
   const [dataUpdateBase, setDataUpdateBase] = useState({
     prodTitleTh: "",
@@ -334,7 +343,7 @@ function EditProductPanel(params) {
   return (
     <>
       <div className="flex flex-col lg:flex-row">
-        <div className="card-body lg:w-[50%] w-full">
+        <div className="card-body lg:w-[40%] w-full">
           <div className="form-control ">
             <label className="label" htmlFor="prodTitleTh">
               <span className="label-text">เปลี่ยนชื่อสินค้า - ไทย</span>
@@ -386,9 +395,10 @@ function EditProductPanel(params) {
           {/* </div> */}
         </div>
 
-        <div className="flex flex-col items-center justify-center lg:w-[50%] w-full pb-5">
-          <figure>
-            {/* {imagesURLs.length > 0 ? (
+        <div className="flex flex-col items-center justify-center lg:w-[60%] w-full pb-5">
+          <div className="flex flex-col items-center justify-center w-[80%] pt-5 mb-5 pb-5 rounded-md bg-base-200">
+            <figure>
+              {/* {imagesURLs.length > 0 ? (
                 imagesURLs.map((e, index) => (
                   <img
                     key={index}
@@ -398,37 +408,66 @@ function EditProductPanel(params) {
                   />
                 ))
               ) :  */}
-            {filterSelectProdBase.image === "none" ? (
-              <img
-                src={`/images/cafe_image3.jpg`}
-                alt="caffe"
-                className="object-cover w-40 rounded-md h-36"
-              />
-            ) : (
-              <img
-                src={`${filterSelectProdBase.image}`}
-                alt="caffe"
-                onError={handleImage}
-                className="object-cover w-40 rounded-md h-36"
-              />
-            )}
-          </figure>
+              {filterSelectProdBase.image === "none" ? (
+                <img
+                  src={`/images/cafe_image3.jpg`}
+                  alt="caffe"
+                  className="object-cover rounded-md w-50 h-45"
+                />
+              ) : (
+                <img
+                  src={`${filterSelectProdBase.image}`}
+                  alt="caffe"
+                  onError={handleImage}
+                  className="object-cover rounded-md w-52 h-46"
+                />
+              )}
+            </figure>
 
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleImageChange}
-            className="w-full max-w-xs mt-2 file-input file-input-bordered"
-          />
+            <div className="flex flex-row justify-around w-full">
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageChange}
+                className="w-full max-w-xs mt-2 file-input file-input-bordered"
+              />
 
-          <button
-            className="mt-2 btn btn-primary"
-            onClick={() => sendUpLoadImage()}
-          >
-            อัปโหลด
-          </button>
+              <button
+                className="mt-2 btn btn-primary"
+                onClick={() => sendUpLoadImage()}
+              >
+                อัปโหลด
+              </button>
+            </div>
+          </div>
+          <div className="w-[90%]">
+            <div className="m-2 mb-5 rounded-md bg-base-200">
+              {resProductDetail && (
+                <AddCategoryPanel
+                  resProductDetail={resProductDetail}
+                  urlDetail={urlDetail}
+                  setOnOpenToast={setOnOpenToast}
+                  setResUpdateStatusState={setResUpdateStatusState}
+                />
+              )}
+            </div>
+            <div className="m-2 mb-5 rounded-md bg-base-200">
+              {resProductDetail && (
+                <AddMaterialPanel
+                  resProductDetail={resProductDetail}
+                  urlDetail={urlDetail}
+                  setOnOpenToast={setOnOpenToast}
+                  setResUpdateStatusState={setResUpdateStatusState}
+                />
+              )}
+            </div>
+          </div>
         </div>
+
+        {/* <div className="lg:w-[40%]"> */}
+
+        {/* </div> */}
       </div>
     </>
   );
