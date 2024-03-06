@@ -105,7 +105,7 @@ export default function DialogCreateAddOn(params) {
 
   const handleOnCloseToDetail = () => {
     timeToOut = setTimeout(() => {
-      // setOpenCreateAddOn(false);
+      setOpenCreateAddOn(false);
       handleOpenMenuAddOnDetail(
         resUpdateStatusState.resUpdate.addOnId,
         resUpdateStatusState.resUpdate.addOnTitleTh,

@@ -85,16 +85,29 @@ export default function DialogCreateProduct(params) {
   };
 
   let timeToOut;
+
   const handleOnClose = () => {
     timeToOut = setTimeout(() => {
       setOpenCreateProduct(false);
     }, 200);
+  };
+
+  const handleOnCloseToEdit = () => {
+    timeToOut = setTimeout(() => {
+      setOpenCreateProduct(false);
+    }, 200);
+
     handleOpenMenuSelectDetail(
       resUpdateStatusState.resUpdate.prodBaseId,
       resUpdateStatusState.resUpdate.prodTitleTh,
       0
     ),
-      window.my_modal_EditProduct.showModal();
+      setResUpdateStatusState({
+        resUpdate: "",
+        errorUpdate: "",
+        isLoadingUpdate: false,
+      });
+    window.my_modal_EditProduct.showModal();
   };
 
   useEffect(() => {
@@ -152,7 +165,7 @@ export default function DialogCreateProduct(params) {
               <div className="mt-6 form-control">
                 <button
                   className="btn btn-neutral"
-                  onClick={() => handleOnClose()}
+                  onClick={() => handleOnCloseToEdit()}
                 >
                   แก้ไขเพิ่มเติม
                 </button>
