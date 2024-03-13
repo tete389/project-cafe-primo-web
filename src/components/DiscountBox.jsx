@@ -4,7 +4,6 @@ import { BaseURL, findPoint } from "../service/BaseURL";
 import axios from "axios";
 import { LanguageContext } from "../pages/customer/Store";
 
-
 export default function DiscountBox(props) {
   const { setingShopData, handleCreateDiscount, setOpenBox } = props;
   const [dataState, setDataState] = useState({
@@ -43,9 +42,10 @@ export default function DiscountBox(props) {
   };
 
   const fixUsePoint = (e, currentPoint) => {
+  
     if (Number(currentPoint) >= dataState.point && e >= 0) {
       setUsePoint(Number(dataState.point));
-    } else {
+    } else if (currentPoint + e < dataState.point) {
       setUsePoint((prev) => {
         if (prev + Number(e) <= 0) {
           return 0;
@@ -102,7 +102,7 @@ export default function DiscountBox(props) {
 
     fetcher();
   };
-console.log(setingShopData?.pointSpendRate);
+  // console.log(setingShopData?.pointSpendRate);
   return (
     <>
       <div className=" form-control">
@@ -149,8 +149,9 @@ console.log(setingShopData?.pointSpendRate);
         {dataState.isError && (
           <div className="flex justify-center my-3">
             <p className="text-red-500 ">
-              
-              {userLanguage === "th" ? "ไม่พบข้อมูล กรุณาตรวจสอบหมายเลขอีกครั้ง" : "No information found, Please check phone number again"}
+              {userLanguage === "th"
+                ? "ไม่พบข้อมูล กรุณาตรวจสอบหมายเลขอีกครั้ง"
+                : "No information found, Please check phone number again"}
             </p>
           </div>
         )}
@@ -163,7 +164,9 @@ console.log(setingShopData?.pointSpendRate);
             <div className="grid grid-cols-3 join">
               <button
                 className=" join-item btn btn-ghost btn-active btn-sm rounded-l-3xl"
-                onClick={() => fixUsePoint(-(setingShopData?.pointSpendRate), usePoint)}
+                onClick={() =>
+                  fixUsePoint(-setingShopData?.pointSpendRate, usePoint)
+                }
               >
                 -
               </button>
@@ -175,7 +178,9 @@ console.log(setingShopData?.pointSpendRate);
               </button>
               <button
                 className=" join-item btn btn-ghost btn-active btn-sm rounded-r-3xl"
-                onClick={() => fixUsePoint(setingShopData?.pointSpendRate, usePoint)}
+                onClick={() =>
+                  fixUsePoint(setingShopData?.pointSpendRate, usePoint)
+                }
               >
                 +
               </button>

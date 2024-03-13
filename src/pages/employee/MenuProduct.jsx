@@ -6,6 +6,7 @@ import {
   BaseURL,
   deleteProductBase,
   findProductBaseAll,
+  haveCountform,
   pageNum,
   pageSize,
 } from "../../service/BaseURL";
@@ -20,8 +21,7 @@ import { useContext } from "react";
 import DialogConfirmDelete from "../../components/DialogConfirmDelete";
 
 export default function MenuProduct() {
- 
-  const prodBaseUrl = `${BaseURL}${findProductBaseAll}?&${pageSize}50&${pageNum}0`;
+  const prodBaseUrl = `${BaseURL}${findProductBaseAll}?${haveCountform}&${pageSize}50&${pageNum}0`;
   const { resMenuProduct, resLoading, resError } = getMenuProduct(prodBaseUrl);
 
   const { setOnOpenToast, setResUpdateStatusState } =
@@ -33,6 +33,7 @@ export default function MenuProduct() {
     isOpen: false,
     prodIdOpen: "",
     prodNameOpen: "",
+    keyPage: 0,
   });
   const [openSelectForm, setOpenSelectForm] = useState({
     isOpen: false,
@@ -45,11 +46,12 @@ export default function MenuProduct() {
     prodBased: "",
   });
 
-  const handleOpenMenuSelectDetail = (prodId, prodName) => {
+  const handleOpenMenuSelectDetail = (prodId, prodName, key) => {
     setOpenSelectDetail({
       isOpen: true,
       prodIdOpen: prodId,
       prodNameOpen: prodName,
+      keyPage: key,
     });
   };
 
@@ -58,6 +60,7 @@ export default function MenuProduct() {
       isOpen: false,
       prodIdOpen: "",
       prodNameOpen: "",
+      keyPage: 0,
     });
   };
 
@@ -195,11 +198,12 @@ export default function MenuProduct() {
 
       {/*  Dialog   */}
       <>
-        <dialog id="my_modal_CreateProduct" className="modal">
+        <dialog id="my_modal_CreateProduct" className=" modal">
           {openCreateProduct && (
             <DialogCreateProduct
               prodBaseUrl={prodBaseUrl}
               setOpenCreateProduct={setOpenCreateProduct}
+              handleOpenMenuSelectDetail={handleOpenMenuSelectDetail}
             />
           )}
         </dialog>
@@ -207,6 +211,7 @@ export default function MenuProduct() {
         <dialog id="my_modal_EditProduct" className="modal">
           {openSelectDetail.isOpen && (
             <DialogEditProduct
+              keyPage={openSelectDetail.keyPage}
               filterSelectProdBase={filterSelectProdBase}
               handleClearOpenMenuSelectDetail={handleClearOpenMenuSelectDetail}
             />

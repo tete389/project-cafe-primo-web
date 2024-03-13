@@ -25,6 +25,7 @@ export default function MenuAddOn() {
     isOpen: false,
     addOnIdOpen: "",
     addOnTitleOpen: "",
+    key: 0
   });
 
   const [openMenuOption, setOpenMenuOption] = useState({
@@ -38,11 +39,12 @@ export default function MenuAddOn() {
     addOnId: "",
   });
 
-  const handleOpenMenuAddOnDetail = (addOnId, addOnTitle) => {
+  const handleOpenMenuAddOnDetail = (addOnId, addOnTitle, key) => {
     setOpenMenuAddOnDetail({
       isOpen: true,
       addOnIdOpen: addOnId,
       addOnTitleOpen: addOnTitle,
+      key: key
     });
   };
 
@@ -51,6 +53,7 @@ export default function MenuAddOn() {
       isOpen: false,
       addOnIdOpen: "",
       addOnNameOpen: "",
+      key: 0
     });
   };
 
@@ -187,6 +190,7 @@ export default function MenuAddOn() {
           {openCreateAddOn && (
             <DialogCreateAddOn
               addOnUrl={addOnUrl}
+              handleOpenMenuAddOnDetail={handleOpenMenuAddOnDetail}
               setOpenCreateAddOn={setOpenCreateAddOn}
             />
           )}
@@ -195,6 +199,7 @@ export default function MenuAddOn() {
         <dialog id="my_modal_EditAddOn" className="modal">
           {openMenuAddOnDetail.isOpen && (
             <DialogEditAddOn
+            keyIndex={openMenuAddOnDetail.key}
               filterSelectAddOn={filterSelectAddOn}
               handleClearOpenMenuAddOnDetail={handleClearOpenMenuAddOnDetail}
             />

@@ -298,11 +298,11 @@ function TableMenuCategory(params) {
           {/* head */}
           <thead>
             <tr>
-              <th></th>
-              <th className="w-[35%]">ชื่อหมวดหมู่</th>
+              <th className="w-[5%]"></th>
+              <th className="w-[25%]">ชื่อหมวดหมู่</th>
               <th className="w-[20%] text-center">สินค้าที่เกี่ยวข้อง</th>
               <th className="w-[15%] text-center">สถานะ</th>
-              <th className="px-1 text-end">
+              <th className="w-[15%] text-end">
                 <button
                   className=" btn btn-xs btn-outline btn-primary"
                   onClick={() => handleOpenCreateCate()}
@@ -398,14 +398,6 @@ function TaBlePanal(params) {
           <p>{resCate.cateNameTh}</p>
           <p>{resCate.cateNameEng}</p>
         </div>
-        <button onClick={() => handleDetail()}>
-          <box-icon
-            name="edit"
-            type="solid"
-            size="sm"
-            color="hsl(var(--wa) / var(--tw-bg-opacity))"
-          ></box-icon>
-        </button>
       </td>
 
       <td className="text-center">
@@ -419,7 +411,7 @@ function TaBlePanal(params) {
         </button>
       </td>
       <td className="text-center rounded-l-md">
-        <label className="px-0 cursor-pointer label " htmlFor={resCate.cateId}>
+        <label className="w-24 px-0 cursor-pointer label text-end" htmlFor={resCate.cateId}>
           <span className="label-text ">
             {resCate.isEnable ? "เปิด" : "ปิด"}
           </span>
@@ -435,12 +427,20 @@ function TaBlePanal(params) {
         </label>
       </td>
       <td className="text-end ">
-        <button
-          className="btn btn-error btn-xs text-base-100"
-          onClick={() => handleOpenDeleteCate(resCate.cateId)}
-        >
-          <span>ลบ</span>
-        </button>
+        <div className="join">
+          <button
+            className="btn btn-warning btn-sm text-base-100 join-item"
+            onClick={() => handleDetail()}
+          >
+            <span>แก้ไข</span>
+          </button>
+          <button
+            className="btn btn-error btn-sm text-base-100 join-item"
+            onClick={() => handleOpenDeleteCate(resCate.cateId)}
+          >
+            <span>ลบ</span>
+          </button>
+        </div>
       </td>
     </tr>
   );

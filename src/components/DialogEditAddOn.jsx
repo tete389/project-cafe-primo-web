@@ -4,9 +4,11 @@ import axios from "axios";
 import ToastAlertError from "./ToastAlertError";
 import ToastAlertSuccess from "./ToastAlertSuccess";
 import ToastAlertLoading from "./ToastAlertLoading";
+import { Tab, Tabs } from "@mui/material";
+import TableMenuAddOption from "./TableMenuAddOption";
 
 export default function DialogEditAddOn(params) {
-  const { filterSelectAddOn, handleClearOpenMenuAddOnDetail } = params;
+  const {keyIndex, filterSelectAddOn, handleClearOpenMenuAddOnDetail } = params;
 
   const [resUpdateStatusState, setResUpdateStatusState] = useState({
     resUpdate: "",
@@ -101,13 +103,22 @@ export default function DialogEditAddOn(params) {
     }, 200);
   };
 
+  const [valueBase, setValueBase] = useState(keyIndex || 0);
+  const handleBaseChange = (event, newValue) => {
+    setValueBase(newValue);
+  };
+
   useEffect(() => {
     return () => clearTimeout(timeToOut);
   }, [timeToOut]);
 
   return (
     <>
-      <div className="p-0 overflow-hidden h-max modal-box">
+      <div
+        className={`w-11/12 p-0 overflow-hidden h-max modal-box ${
+          valueBase ? "max-w-5xl" : "max-w-xl"
+        }`}
+      >
         <form method="dialog" className="p-2 bg-base-200">
           <p className="text-3xl font-bold">
             {filterSelectAddOn?.addOnTitleTh}
@@ -120,72 +131,91 @@ export default function DialogEditAddOn(params) {
           </button>
         </form>
         <div className="h-full px-0 pt-0 overflow-auto card-body scrollerBar">
-          <div className="m-2 rounded-md bg-base-100">
-            {filterSelectAddOn && (
-              <div className="w-full card-body">
-                <div className="flex flex-row justify-between">
-                  <div className="form-control ">
-                    <label className="label" htmlFor="cate-name-th">
-                      <span className="label-text">
-                        เปลี่ยนชื่อตัวเลือกสินค้า - ไทย
-                      </span>
-                    </label>
-                    <input
-                      id="cate-name-th"
-                      type="text"
-                      value={dataUpdateAddOn.addOnTitleTh}
-                      placeholder={filterSelectAddOn?.addOnTitleTh}
-                      className="input input-bordered"
-                      onChange={handleAddOnTitleTh}
-                    />
+          <Tabs
+            value={valueBase}
+            onChange={handleBaseChange}
+            variant="scrollable"
+            scrollButtons
+            allowScrollButtonsMobile
+            aria-label="scrollable force tabs example"
+          >
+            <Tab label="รายละเอียด" />
+            <Tab label="ตัวเลือกย่อย" />
+            {/* <Tab label="เพิ่มเติม" /> */}
+          </Tabs>
+
+          {valueBase === 0 ? (
+            <div className="m-2 rounded-md bg-base-100">
+              {filterSelectAddOn && (
+                <div className="w-full card-body">
+                  <div className="flex flex-row justify-between">
+                    <div className="form-control ">
+                      <label className="label" htmlFor="cate-name-th">
+                        <span className="label-text">
+                          เปลี่ยนชื่อตัวเลือกสินค้า - ไทย
+                        </span>
+                      </label>
+                      <input
+                        id="cate-name-th"
+                        type="text"
+                        value={dataUpdateAddOn.addOnTitleTh}
+                        placeholder={filterSelectAddOn?.addOnTitleTh}
+                        className="input input-bordered"
+                        onChange={handleAddOnTitleTh}
+                      />
+                    </div>
+
+                    <div className="form-control ">
+                      <label className="label" htmlFor="cate-name-eng">
+                        <span className="label-text">
+                          เปลี่ยนชื่อตัวเลือกสินค้า - อังกฤษ
+                        </span>
+                      </label>
+                      <input
+                        id="cate-name-eng"
+                        type="text"
+                        value={dataUpdateAddOn.addOnTitleEng}
+                        placeholder={filterSelectAddOn?.addOnTitleEng}
+                        className="input input-bordered"
+                        onChange={handleAddOnTitleEng}
+                      />
+                    </div>
                   </div>
 
-                  <div className="form-control ">
-                    <label className="label" htmlFor="cate-name-eng">
-                      <span className="label-text">
-                        เปลี่ยนชื่อตัวเลือกสินค้า - อังกฤษ
-                      </span>
-                    </label>
-                    <input
-                      id="cate-name-eng"
-                      type="text"
-                      value={dataUpdateAddOn.addOnTitleEng}
-                      placeholder={filterSelectAddOn?.addOnTitleEng}
-                      className="input input-bordered"
-                      onChange={handleAddOnTitleEng}
-                    />
-                  </div>
-                </div>
-
-                <div className="justify-between pt-1 card-actions">
-                  <div className="form-control">
-                    <label
-                      className="pt-0 cursor-pointer label"
-                      htmlFor="cate-many-option"
+                  <div className="justify-between pt-1 card-actions">
+                    <div className="form-control">
+                      <label
+                        className="pt-0 cursor-pointer label"
+                        htmlFor="cate-many-option"
+                      >
+                        <span className="label-text ">
+                          เลือกได้หลายตัวเลือก :{" "}
+                          {filterSelectAddOn.isManyOptions ? "เปิดอยู่" : "ปิด"}
+                        </span>
+                      </label>
+                      <input
+                        id="cate-many-option"
+                        type="checkbox"
+                        className="toggle toggle-success toggle-md"
+                        checked={dataUpdateAddOn?.isManyOptions}
+                        onChange={handleAddOnIsManyOptions}
+                      />
+                    </div>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => sendUpdateCategory()}
                     >
-                      <span className="label-text ">
-                        เลือกได้หลายตัวเลือก :{" "}
-                        {filterSelectAddOn.isManyOptions ? "เปิดอยู่" : "ปิด"}
-                      </span>
-                    </label>
-                    <input
-                      id="cate-many-option"
-                      type="checkbox"
-                      className="toggle toggle-success toggle-md"
-                      checked={dataUpdateAddOn?.isManyOptions}
-                      onChange={handleAddOnIsManyOptions}
-                    />
+                      บันทัก
+                    </button>
                   </div>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => sendUpdateCategory()}
-                  >
-                    บันทัก
-                  </button>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          ) : (
+            <>
+             <TableMenuAddOption filterSelectAddOn={filterSelectAddOn} />
+            </>
+          )}
         </div>
       </div>
 

@@ -25,7 +25,7 @@ export default function TableMenuAddOn(params) {
             <tr>
               <th></th>
               <th className="w-[25%]">ชื่อหัวข้อตัวเลือก</th>
-              <th className="w-[25%] text-center">ตัวเลือกย่อย</th>
+              {/* <th className="w-[25%] text-center">ตัวเลือกย่อย</th> */}
               <th className="w-[15%] text-center">สถานะ</th>
               <th className="px-1 text-end">
                 <button
@@ -66,8 +66,8 @@ function TaBlePanalAddOn(params) {
   const { setOnOpenToast, setResUpdateStatusState } =
     useContext(ToastAlertContext);
 
-  const handleDetail = () => {
-    handleOpenMenuAddOnDetail(resAddOn.addOnId, resAddOn.addOnTitleTh);
+  const handleDetail = (key) => {
+    handleOpenMenuAddOnDetail(resAddOn.addOnId, resAddOn.addOnTitleTh, key);
     window.my_modal_EditAddOn.showModal();
   };
 
@@ -123,26 +123,11 @@ function TaBlePanalAddOn(params) {
           <p>{resAddOn.addOnTitleTh}</p>
           <p>{resAddOn.addOnTitleEng}</p>
         </div>
-        <button onClick={() => handleDetail()}>
-          <box-icon
-            name="edit"
-            type="solid"
-            size="sm"
-            color="hsl(var(--wa) / var(--tw-bg-opacity))"
-          ></box-icon>
-        </button>
       </td>
 
-      <td className="text-center">
-        <button
-          className="btn btn-xs"
-          onClick={() =>
-            handleOpenMenuOption(resAddOn.addOnId, resAddOn.addOnTitleTh)
-          }
-        >
-          ดูรายละเอียด
-        </button>
-      </td>
+      {/* <td className="text-center">
+        
+      </td> */}
       <td className="text-center rounded-l-md">
         <label className="cursor-pointer label" htmlFor={resAddOn.addOnId}>
           <span className="label-text ">
@@ -160,12 +145,29 @@ function TaBlePanalAddOn(params) {
         </label>
       </td>
       <td className="text-end">
-        <button
-          className="btn btn-error btn-xs text-base-100"
-          onClick={() => handleOpenDeleteAddOn(resAddOn.addOnId)}
+        <div className="join">
+          <button
+            className="btn btn-warning btn-sm text-base-100 join-item"
+            onClick={() => handleDetail(0)}
+          >
+            <span>แก้ไข</span>
+          </button>
+          <button
+          className="btn btn-info btn-sm text-base-100 join-item"
+          // onClick={() =>
+          //   handleOpenMenuOption(resAddOn.addOnId, resAddOn.addOnTitleTh)
+          // }
+          onClick={() => handleDetail(1)}
         >
-          <span>ลบ</span>
+          ตัวเลือกย่อย
         </button>
+          <button
+            className="btn btn-error btn-sm text-base-100 join-item"
+            onClick={() => handleOpenDeleteAddOn(resAddOn.addOnId)}
+          >
+            <span>ลบ</span>
+          </button>
+        </div>
       </td>
     </tr>
   );

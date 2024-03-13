@@ -1,7 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { BaseURL, findOrderById, haveOrderDetail } from "../service/BaseURL";
+import {
+  BaseURL,
+  findOrderById,
+  findOrderByIdList,
+  getNotificationsCustomer,
+  haveOrderDetail,
+} from "../service/BaseURL";
+import SockJS from "sockjs-client/dist/sockjs";
+import { over } from "stompjs";
+let stompClient = null;
 import useSWR from "swr";
 import axios from "axios";
 import ResLoadingScreen from "./ResLoadingScreen";
@@ -12,7 +21,13 @@ import { LanguageContext } from "../pages/customer/Store";
 export default function FollowOrderPopup(params) {
   const { handleOpenFollowOrder, followOrder, setfollowOrder } = params;
 
+  // const { detailOrderAll, detailOrderAllLoading, detailOrderAllError } =
+  // getOrderDetailAll(listOrderId, orderUrl);
+
+  // console.log(listOrderId);
   const userLanguage = useContext(LanguageContext);
+  const [orderRes, setOrderRes] = useState([]);
+  const [notificationsCus, setNotificationsCus] = useState();
 
   const [orderSelect, setOrderSelect] = useState({});
   const handleOrderSelect = (newSelect) => {
@@ -36,6 +51,99 @@ export default function FollowOrderPopup(params) {
     setfollowOrder(toDelete);
   };
 
+  /////////  fetcher /////////
+  const fetcherOrder = () => {
+    const listOrderId = [];
+    if (followOrder?.length > 0) {
+      for (const order of followOrder) {
+        listOrderId.push(order.orderId);
+      }
+    }
+
+    if (notificationsCus) {
+      if (!listOrderId.includes(notificationsCus?.orderId)) {
+        return;
+      }
+    }
+
+    let dataJson = JSON.stringify({ orderIds: listOrderId });
+    let customConfig = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const fetcherResOrder = async () => {
+      try {
+        const response = await axios.post(
+          `${BaseURL}${findOrderByIdList}`,
+          dataJson,
+          customConfig
+        );
+        const data = await response.data.res;
+
+        setOrderRes(data);
+      } catch (error) {
+        console.error("error : ", error);
+      }
+    };
+
+    if (listOrderId.length > 0) {
+      fetcherResOrder();
+    }
+  };
+
+  const manageDate = (orderDateTime) => {
+    let orderDate = [];
+    if (orderDateTime) {
+      const delimiters = /[- ]/;
+      const originalString = orderDateTime?.split(delimiters);
+      const date = `${originalString[2]}-${originalString[1]}-${originalString[0]}`;
+      return date;
+    }
+    return orderDate;
+  };
+
+  const manageTime = (orderDateTime) => {
+    let orderTime = [];
+    if (orderDateTime) {
+      const originalString = orderDateTime;
+      orderTime = originalString?.split(" ");
+      return orderTime[1];
+    }
+    return orderTime;
+  };
+
+  const toGetNotifications = async () => {
+    const socket = new SockJS(`${BaseURL}/ws`);
+    stompClient = over(socket);
+
+    try {
+      await stompClient.connect({}, () => {
+        stompClient.subscribe(
+          "/topic/customer_notifications",
+          (notification) => {
+            setNotificationsCus(JSON.parse(notification.body));
+          }
+        );
+        // axios.post(`${BaseURL}${getNotificationsCustomer}`);
+      });
+    } catch (error) {
+      console.error("error : ", error);
+    }
+  };
+
+  useEffect(() => {
+    toGetNotifications();
+    return () => {
+      stompClient.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    fetcherOrder();
+  }, [notificationsCus]);
+
   return (
     <div className="w-screen md:w-[30rem] h-screen">
       <header className="w-full bg-base-100">
@@ -57,12 +165,12 @@ export default function FollowOrderPopup(params) {
       </header>
 
       <main className="flex flex-col h-full overflow-y-scroll pb-[16rem] bg-base-300 pt-2 scrollerBar">
-        {followOrder?.map((e, index) => (
+        {orderRes?.map((e, index) => (
           <div
             key={index}
-            className="mx-2 mb-3 shadow-md card bg-base-100 text-base-content"
+            className={`mx-2 mb-3 shadow-md card text-base-content  bg-base-100 `}
           >
-            <button
+            {/* <button
               className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2"
               onClick={() => deleteOrder(index)}
             >
@@ -71,8 +179,19 @@ export default function FollowOrderPopup(params) {
                 type="solid"
                 color="hsl(var(--bc) / var(--tw-text-opacity))"
               ></box-icon>
-            </button>
-            <div className="card-body ">
+            </button> */}
+            <div className={`pt-10 rounded-t-xl  ${
+              e.status === "Success"
+                ? "bg-success"
+                : e.status === "Receive"
+                ? "bg-warning"
+                : e.status === "Making"
+                ? "bg-info"
+                : e.status === "Cancel"
+                ? "bg-error"
+                : "bg-base-100"
+            } `}></div>
+            <div className="pt-0 mt-0 card-body">
               <p className="text-2xl font-bold card-title">
                 {userLanguage === "th"
                   ? "หมายเลขออเดอร์: Od-" + e.orderNumber
@@ -98,6 +217,39 @@ export default function FollowOrderPopup(params) {
                   )}
                 </div>
               </div>
+
+              <>
+                <div className="mt-[1px] divider mb-[1px]"></div>
+
+                <div className="flex justify-between ">
+                  <p>{userLanguage === "th" ? "ยอดรวม" : "Total "}</p>
+                  <p className="text-end">{e.orderPrice}</p>
+                </div>
+                <div className="mt-[1px] divider mb-[1px]"></div>
+                <div className="flex justify-between">
+                  <p>
+                    {userLanguage === "th" ? "วันที่ : " : "Date"}
+                    {manageDate(e.orderDate)}
+                  </p>
+
+                  <p className="text-end">
+                    {userLanguage === "th" ? "เวลา : " : "Time"}
+
+                    {manageTime(e.orderDate)}
+                  </p>
+                </div>
+                <div className="flex flex-wrap">
+                  <p>
+                    {userLanguage === "th" ? "สถานะออเดอร์" : "Order Status"}
+                  </p>
+                  <p className="text-2xl font-extrabold text-center">
+                    <ByCassStatus
+                      status={e.status}
+                      userLanguage={userLanguage}
+                    />
+                  </p>
+                </div>
+              </>
             </div>
           </div>
         ))}
@@ -151,7 +303,7 @@ function FollowOrderDetail(params) {
           {detailOrder?.customerName &&
             detailOrder?.customerName !== "none" && (
               <div className="flex justify-between text-2xl font-bold">
-                <p>{userLanguage === "th" ? "ชิ่อลูกค้า" : "Customer Name"}</p>
+                <p>{userLanguage === "th" ? "ชื่อลูกค้า" : "Customer Name"}</p>
                 <p className="text-end">{detailOrder?.customerName}</p>
               </div>
             )}
@@ -222,7 +374,7 @@ function FollowOrderDetail(params) {
               </div>
             </>
           )}
-          <div className="mt-[1px] divider"></div>
+          {/* <div className="mt-[1px] divider"></div>
 
           <div className="flex justify-between ">
             <p>{userLanguage === "th" ? "ยอดรวม" : "Total "}</p>
@@ -237,7 +389,7 @@ function FollowOrderDetail(params) {
 
             <p className="text-end">
               {userLanguage === "th" ? "เวลา : " : "Time"}
-              {/* {orderDateTime[1]} */}
+
               {manageTime(detailOrder.orderDate)}
             </p>
           </div>
@@ -249,15 +401,15 @@ function FollowOrderDetail(params) {
                 userLanguage={userLanguage}
               />
             </p>
-          </div>
-          {detailOrder.status === "Success" && (
+          </div> */}
+          {/* {detailOrder.status === "Success" && (
             <ButtonTabTakePoints
               orderId={detailOrder?.orderId}
               orderDetailPoint={detailOrder?.orderDetailPoint}
               orderUrl={orderUrl}
               orderPrice={detailOrder?.orderPrice}
             />
-          )}
+          )} */}
         </>
       ) : (
         <>
@@ -382,5 +534,22 @@ const getOrderDetail = (orderId, orderUrl) => {
     detailOrder: data,
     detailOrderLoading: isLoading,
     detailOrderError: error,
+  };
+};
+
+const fetcherOrderAll = ([url, orderIds]) =>
+  axios.post(url, orderIds).then((res) => res.data.res);
+const getOrderDetailAll = (orderIds, orderUrl) => {
+  const { data, error, isLoading } = useSWR(
+    [orderUrl, orderIds],
+    fetcherOrderAll(),
+    {
+      revalidateOnFocus: false,
+    }
+  );
+  return {
+    detailOrderAll: data,
+    detailOrderAllLoading: isLoading,
+    detailOrderAllError: error,
   };
 };

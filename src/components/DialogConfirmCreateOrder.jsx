@@ -2,7 +2,12 @@ import { useContext, useEffect, useState } from "react";
 
 import axios from "axios";
 import { BaseURL, requestOrder } from "../service/BaseURL";
-import { BasketValueContext, LanguageContext, OrderValueContext, ToastContext } from "../pages/customer/Store";
+import {
+  BasketValueContext,
+  LanguageContext,
+  OrderValueContext,
+  ToastContext,
+} from "../pages/customer/Store";
 
 export default function DialogConfirmCreateOrder(params) {
   const { setOpenDialogConfirmOrder, handleOpenBasket, setfollowOrder } =
@@ -20,6 +25,10 @@ export default function DialogConfirmCreateOrder(params) {
   });
 
   const [textCustomerName, setTextCustomerName] = useState(
+    orderValue.customerPhone || ""
+  );
+
+  const [textCustomerPhoneNumber, setTextCustomerPhoneNumber] = useState(
     orderValue.customerName || ""
   );
 
@@ -27,21 +36,26 @@ export default function DialogConfirmCreateOrder(params) {
     setTextCustomerName(event.target.value);
   };
 
+  const handleTextCustomerPhone = (event) => {
+    if (/^[0-9]+$/.test(event.target.value) || event.target.value === "") {
+      setTextCustomerPhoneNumber(event.target.value);
+    }
+  };
+
   /////////  fetcher /////////
   const confirmCreateOrder = () => {
     let addName = orderValue;
-    if (addName.note) {
-      addName = {
-        ...addName,
-        customerName: textCustomerName,
-      };
-    } else {
-      addName = {
-        ...addName,
-        customerName: textCustomerName,
-        note: "",
-      };
-    }
+
+    addName = {
+      ...addName,
+      customerName: textCustomerName,
+      note: addName.note ? addName.note : "",
+      collect: {
+        phoneNumber: textCustomerPhoneNumber,
+        collectPoint: textCustomerPhoneNumber ? orderValue.orderPriceAll : 0,
+      },
+    };
+
     // setCustomerNameAndCheckNote();
 
     let dataJson = JSON.stringify(addName);
@@ -136,7 +150,9 @@ export default function DialogConfirmCreateOrder(params) {
       });
 
       const toDateTh1 = currentTh1.split("/");
-      const dateTh1 = `${toDateTh1[2]}-${toDateTh1[0].length === 1 ? "0"+toDateTh1[0] : toDateTh1[0]}-${toDateTh1[1]}`;
+      const dateTh1 = `${toDateTh1[2]}-${
+        toDateTh1[0].length === 1 ? "0" + toDateTh1[0] : toDateTh1[0]
+      }-${toDateTh1[1].length === 1 ? "0" + toDateTh1[1] : toDateTh1[1]}`;
 
       if (dateTh1 === followOrder[0]?.orderDateTime) {
         follow = [
@@ -201,7 +217,7 @@ export default function DialogConfirmCreateOrder(params) {
 
         <div className="w-full max-w-xs form-control">
           <label className="label">
-            <span className="label-text">
+            <span className="text-lg label-text">
               {userLanguage === "th"
                 ? "ชื่อเล่นของคุณ"
                 : "What is your nickname?"}
@@ -216,21 +232,61 @@ export default function DialogConfirmCreateOrder(params) {
           />
 
           <label className="label">
-            <span className="label-text-alt">
+            <span className="label-text-alt ">
               {userLanguage === "th" ? (
-                <div>
+                <>
                   <span className="text-red-600">ไม่บังคับ </span>
                   <span>แต่เพื่อให้ช่วยพนักงานจำออเดอร์ของคุณง่ายขึ้น</span>
-                </div>
+                </>
               ) : (
-                <div>
+                <>
                   <span className="text-red-600">Not required </span>
                   <span>
                     But to help employees remember your orders more easily
                   </span>
-                </div>
+                </>
               )}
             </span>
+          </label>
+        </div>
+
+        <div className="w-full max-w-xs pt-5 form-control">
+          <label className="label">
+            <span className="text-lg label-text">
+              {userLanguage === "th"
+                ? "เบอร์โทรศัพท์ของคุณ"
+                : "Your phone number "}
+            </span>
+          </label>
+
+          <input
+            id="inputValue-id"
+            name="inputValue-1"
+            type="text"
+            className="w-full max-w-xs input input-bordered"
+            maxLength={10}
+            value={textCustomerPhoneNumber}
+            onChange={handleTextCustomerPhone}
+          />
+
+          <label className="text-lg label label-text">
+            {userLanguage === "th" ? (
+              <>
+                <span>เพื่อรับแต้ม </span>
+                <span className="text-2xl font-bold text-green-600">
+                  {orderValue.orderPriceAll}{" "}
+                </span>
+                <span></span>
+              </>
+            ) : (
+              <>
+                <span>for collect point</span>
+                <span className="text-2xl font-bold text-green-600">
+                  {orderValue.orderPriceAll}
+                </span>
+                <span></span>
+              </>
+            )}
           </label>
         </div>
         <div className="flex items-center justify-center modal-action">

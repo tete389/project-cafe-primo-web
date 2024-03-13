@@ -6,7 +6,8 @@ import ToastAlertError from "./ToastAlertError";
 import ToastAlertSuccess from "./ToastAlertSuccess";
 
 export default function DialogCreateProduct(params) {
-  const { prodBaseUrl, setOpenCreateProduct } = params;
+  const { prodBaseUrl, setOpenCreateProduct, handleOpenMenuSelectDetail } =
+    params;
   const { mutate } = useSWRConfig();
 
   const [resUpdateStatusState, setResUpdateStatusState] = useState({
@@ -22,13 +23,22 @@ export default function DialogCreateProduct(params) {
 
   const handleBaseTitleTh = (event) => {
     if (/^[ก-๏0-9\s]+$/.test(event.target.value) || event.target.value === "") {
-      setDataCreateBase((prev) => ({ ...prev, prodTitleTh: event.target.value }));
+      setDataCreateBase((prev) => ({
+        ...prev,
+        prodTitleTh: event.target.value,
+      }));
     }
   };
 
   const handleBaseTitleEng = (event) => {
-    if (/^[a-zA-Z0-9\s]+$/.test(event.target.value) || event.target.value === "") {
-      setDataCreateBase((prev) => ({ ...prev, prodTitleEng: event.target.value }));
+    if (
+      /^[a-zA-Z0-9\s]+$/.test(event.target.value) ||
+      event.target.value === ""
+    ) {
+      setDataCreateBase((prev) => ({
+        ...prev,
+        prodTitleEng: event.target.value,
+      }));
     }
   };
 
@@ -54,7 +64,7 @@ export default function DialogCreateProduct(params) {
           resUpdate: data,
           errorUpdate: "",
         }));
-        mutate(prodBaseUrl);
+        await mutate(prodBaseUrl);
       } catch (error) {
         console.error("error : ", error);
         setResUpdateStatusState((prev) => ({
@@ -75,9 +85,27 @@ export default function DialogCreateProduct(params) {
   };
 
   let timeToOut;
+
   const handleOnClose = () => {
     timeToOut = setTimeout(() => {
       setOpenCreateProduct(false);
+    }, 200);
+  };
+
+  const handleOnCloseToEdit = () => {
+    timeToOut = setTimeout(() => {
+      setOpenCreateProduct(false);
+      handleOpenMenuSelectDetail(
+        resUpdateStatusState.resUpdate.prodBaseId,
+        resUpdateStatusState.resUpdate.prodTitleTh,
+        0
+      ),
+        setResUpdateStatusState({
+          resUpdate: "",
+          errorUpdate: "",
+          isLoadingUpdate: false,
+        });
+      window.my_modal_EditProduct.showModal();
     }, 200);
   };
 
@@ -136,9 +164,9 @@ export default function DialogCreateProduct(params) {
               <div className="mt-6 form-control">
                 <button
                   className="btn btn-neutral"
-                  onClick={() => handleOnClose()}
+                  onClick={() => handleOnCloseToEdit()}
                 >
-                  สำเร็จ
+                  แก้ไขเพิ่มเติม
                 </button>
               </div>
             </form>
